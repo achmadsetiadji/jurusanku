@@ -27,7 +27,7 @@ const faqData = [
       },
       {
         question: 'Berapa lama waktu yang dibutuhkan untuk menyelesaikan asesmen?',
-        answer: 'Asesmen terdiri dari 32 pertanyaan dan biasanya membutuhkan waktu sekitar 10-15 menit untuk diselesaikan. Jawablah dengan jujur untuk hasil yang lebih akurat.',
+        answer: 'Asesmen terdiri dari 63 pertanyaan yang dibagi dalam 3 kategori (Minat, Kemampuan, dan Akademik). Biasanya membutuhkan waktu sekitar 15-20 menit untuk diselesaikan. Jawablah dengan jujur untuk hasil yang lebih akurat.',
       },
       {
         question: 'Apakah data saya aman?',

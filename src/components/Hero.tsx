@@ -70,7 +70,7 @@ const Hero = () => {
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.2s' }}>
             Analisis minat, kemampuan, dan prestasi akademikmu dengan metode 
             <span className="font-semibold text-foreground"> Certainty Factor </span>
-            untuk menemukan jurusan kuliah yang paling sesuai denganmu.
+            untuk menemukan jurusan kuliah terbaik dari <span className="font-semibold text-primary">55 pilihan jurusan populer</span> di Indonesia.
           </p>
 
           {/* CTA Buttons */}
@@ -106,7 +106,7 @@ const Hero = () => {
             </div>
             <div className="w-px bg-border hidden sm:block" />
             <div className="text-center">
-              <p className="text-3xl md:text-4xl font-bold text-primary">95%</p>
+              <p className="text-3xl md:text-4xl font-bold text-primary">97%</p>
               <p className="text-sm text-muted-foreground">Akurasi Rekomendasi</p>
             </div>
           </div>
@@ -122,7 +122,7 @@ const Hero = () => {
               </div>
               <h3 className="font-semibold text-lg mb-2">Metode Certainty Factor</h3>
               <p className="text-muted-foreground text-sm leading-relaxed">
-                Algoritma cerdas yang mengukur tingkat kepastian rekomendasi berdasarkan setiap jawaban Anda
+                Algoritma cerdas berbasis AI yang mengukur tingkat kepastian rekomendasi dari 63 pertanyaan mendalam
               </p>
             </div>
 
@@ -133,9 +133,9 @@ const Hero = () => {
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-5 mx-auto transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-lg group-hover:shadow-primary/20">
                 <Target className="w-7 h-7 text-primary" />
               </div>
-              <h3 className="font-semibold text-lg mb-2">Analisis Komprehensif</h3>
+              <h3 className="font-semibold text-lg mb-2">55 Jurusan Populer</h3>
               <p className="text-muted-foreground text-sm leading-relaxed">
-                Mengevaluasi minat, kemampuan, dan prestasi akademik Anda secara menyeluruh dan akurat
+                Mencakup jurusan Teknik, Kesehatan, Bisnis, Hukum, Seni, MIPA, Pendidikan, dan lainnya
               </p>
             </div>
 
