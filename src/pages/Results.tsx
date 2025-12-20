@@ -41,7 +41,7 @@ const Results = () => {
       
       // Header
       doc.setFontSize(24);
-      doc.setTextColor(230, 126, 34); // Primary orange color
+      doc.setTextColor(230, 126, 34);
       doc.text('JurusanKu', pageWidth / 2, 20, { align: 'center' });
       
       doc.setFontSize(16);
@@ -66,11 +66,11 @@ const Results = () => {
       const topResult = results[0];
       doc.setFontSize(12);
       doc.setTextColor(230, 126, 34);
-      doc.text('Rekomendasi Terbaik:', 20, 55);
+      doc.text('REKOMENDASI TERBAIK', 20, 55);
       
       doc.setFontSize(18);
       doc.setTextColor(40, 40, 40);
-      doc.text(`${topResult.major.icon} ${topResult.major.name}`, 20, 65);
+      doc.text(topResult.major.name, 20, 65);
       
       doc.setFontSize(14);
       doc.setTextColor(230, 126, 34);
@@ -81,47 +81,84 @@ const Results = () => {
       const descLines = doc.splitTextToSize(topResult.major.description, pageWidth - 40);
       doc.text(descLines, 20, 82);
       
+      // Careers for top result
+      doc.setFontSize(9);
+      doc.setTextColor(80, 80, 80);
+      doc.text(`Prospek Karier: ${topResult.major.careers.join(', ')}`, 20, 95);
+      
       // All results
-      let yPosition = 100;
+      let yPosition = 110;
       
       doc.setFontSize(14);
       doc.setTextColor(40, 40, 40);
-      doc.text('Semua Rekomendasi:', 20, yPosition);
-      yPosition += 10;
+      doc.text('DAFTAR LENGKAP REKOMENDASI', 20, yPosition);
+      yPosition += 12;
+      
+      // Table header
+      doc.setFillColor(245, 245, 245);
+      doc.rect(20, yPosition, pageWidth - 40, 10, 'F');
+      doc.setFontSize(10);
+      doc.setTextColor(80, 80, 80);
+      doc.text('No.', 25, yPosition + 7);
+      doc.text('Jurusan', 40, yPosition + 7);
+      doc.text('Persentase', pageWidth - 50, yPosition + 7);
+      doc.text('CF Value', pageWidth - 25, yPosition + 7);
+      yPosition += 12;
       
       results.forEach((result, index) => {
         if (yPosition > 270) {
           doc.addPage();
           yPosition = 20;
+          
+          // Repeat table header on new page
+          doc.setFillColor(245, 245, 245);
+          doc.rect(20, yPosition, pageWidth - 40, 10, 'F');
+          doc.setFontSize(10);
+          doc.setTextColor(80, 80, 80);
+          doc.text('No.', 25, yPosition + 7);
+          doc.text('Jurusan', 40, yPosition + 7);
+          doc.text('Persentase', pageWidth - 50, yPosition + 7);
+          doc.text('CF Value', pageWidth - 25, yPosition + 7);
+          yPosition += 12;
         }
         
-        // Result box
-        doc.setDrawColor(200, 200, 200);
-        doc.setFillColor(250, 250, 250);
-        doc.roundedRect(20, yPosition, pageWidth - 40, 25, 3, 3, 'FD');
+        // Alternate row background
+        if (index % 2 === 0) {
+          doc.setFillColor(252, 252, 252);
+          doc.rect(20, yPosition - 3, pageWidth - 40, 18, 'F');
+        }
+        
+        // Row border
+        doc.setDrawColor(230, 230, 230);
+        doc.line(20, yPosition + 15, pageWidth - 20, yPosition + 15);
         
         // Rank
-        doc.setFontSize(12);
+        doc.setFontSize(10);
         doc.setTextColor(230, 126, 34);
-        doc.text(`#${index + 1}`, 25, yPosition + 10);
+        doc.text(`${index + 1}`, 27, yPosition + 5);
         
-        // Major name and icon
-        doc.setFontSize(12);
+        // Major name
+        doc.setFontSize(11);
         doc.setTextColor(40, 40, 40);
-        doc.text(`${result.major.icon} ${result.major.name}`, 40, yPosition + 10);
-        
-        // Percentage
-        doc.setFontSize(14);
-        doc.setTextColor(230, 126, 34);
-        doc.text(`${result.percentage}%`, pageWidth - 30, yPosition + 10, { align: 'right' });
+        doc.text(result.major.name, 40, yPosition + 5);
         
         // Careers
         doc.setFontSize(8);
         doc.setTextColor(120, 120, 120);
-        const careers = result.major.careers.slice(0, 3).join(' • ');
-        doc.text(careers, 40, yPosition + 18);
+        const careers = result.major.careers.slice(0, 2).join(', ');
+        doc.text(careers, 40, yPosition + 11);
         
-        yPosition += 30;
+        // Percentage
+        doc.setFontSize(11);
+        doc.setTextColor(230, 126, 34);
+        doc.text(`${result.percentage}%`, pageWidth - 50, yPosition + 5);
+        
+        // CF Value
+        doc.setFontSize(9);
+        doc.setTextColor(100, 100, 100);
+        doc.text(result.cfValue.toFixed(4), pageWidth - 25, yPosition + 5);
+        
+        yPosition += 18;
       });
       
       // Footer
