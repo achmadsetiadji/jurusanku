@@ -1,6 +1,8 @@
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import PageLoader from '@/components/PageLoader';
 import {
   Accordion,
   AccordionContent,
@@ -100,6 +102,25 @@ const faqData = [
 ];
 
 const FAQ = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <>
+        <Navbar />
+        <PageLoader />
+      </>
+    );
+  }
+
   return (
     <>
       <Helmet>

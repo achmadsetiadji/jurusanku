@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import PageLoader from '@/components/PageLoader';
 import ResultCard from '@/components/ResultCard';
 import { Button } from '@/components/ui/button';
 import { CFResult } from '@/lib/certaintyFactor';
@@ -14,6 +15,7 @@ const Results = () => {
   const { toast } = useToast();
   const [results, setResults] = useState<CFResult[]>([]);
   const [isExporting, setIsExporting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const resultsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,7 +24,14 @@ const Results = () => {
       setResults(JSON.parse(storedResults));
     } else {
       navigate('/assessment');
+      return;
     }
+    
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
   }, [navigate]);
 
   const handleRetake = () => {
@@ -197,8 +206,13 @@ const Results = () => {
     }
   };
 
-  if (results.length === 0) {
-    return null;
+  if (results.length === 0 || isLoading) {
+    return (
+      <>
+        <Navbar />
+        <PageLoader />
+      </>
+    );
   }
 
   const topResult = results[0];
