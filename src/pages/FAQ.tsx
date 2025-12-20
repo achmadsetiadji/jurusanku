@@ -116,7 +116,7 @@ const FAQ = () => {
     return (
       <>
         <Navbar />
-        <PageLoader />
+        <PageLoader variant="faq" />
       </>
     );
   }

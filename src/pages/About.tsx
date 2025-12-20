@@ -21,7 +21,7 @@ const About = () => {
     return (
       <>
         <Navbar />
-        <PageLoader />
+        <PageLoader variant="about" />
       </>
     );
   }
