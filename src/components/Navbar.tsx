@@ -17,12 +17,12 @@ const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border animate-fade-in-down">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="JurusanKu Logo" className="w-10 h-10 object-contain" />
+          <Link to="/" className="flex items-center gap-2 transition-transform duration-300 hover:scale-105">
+            <img src={logo} alt="JurusanKu Logo" className="w-10 h-10 object-contain transition-transform duration-300 hover:rotate-12" />
             <span className="font-bold text-lg">JurusanKu</span>
           </Link>
 
@@ -32,8 +32,8 @@ const Navbar = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  isActive(link.path) ? 'text-primary' : 'text-muted-foreground'
+                className={`text-sm font-medium transition-all duration-300 hover:text-primary relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-[-4px] after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left ${
+                  isActive(link.path) ? 'text-primary after:scale-x-100' : 'text-muted-foreground'
                 }`}
               >
                 {link.label}
@@ -43,14 +43,14 @@ const Navbar = () => {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Button asChild>
+            <Button asChild className="transition-all duration-300 hover:scale-105 active:scale-95">
               <Link to="/assessment">Mulai Asesmen</Link>
             </Button>
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2"
+            className="md:hidden p-2 transition-transform duration-300 hover:scale-110 active:scale-95"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -64,21 +64,22 @@ const Navbar = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border">
+          <div className="md:hidden py-4 border-t border-border animate-fade-in">
             <div className="flex flex-col gap-4">
-              {navLinks.map((link) => (
+              {navLinks.map((link, index) => (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`text-sm font-medium transition-colors hover:text-primary px-2 py-2 ${
-                    isActive(link.path) ? 'text-primary' : 'text-muted-foreground'
+                  className={`text-sm font-medium transition-all duration-300 hover:text-primary px-2 py-2 rounded-lg hover:bg-muted/50 animate-slide-in-left ${
+                    isActive(link.path) ? 'text-primary bg-primary/5' : 'text-muted-foreground'
                   }`}
+                  style={{ animationDelay: `${index * 0.05}s` }}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.label}
                 </Link>
               ))}
-              <Button asChild className="mt-2">
+              <Button asChild className="mt-2 animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
                 <Link to="/assessment" onClick={() => setIsMenuOpen(false)}>
                   Mulai Asesmen
                 </Link>

@@ -35,10 +35,10 @@ const QuestionCard = ({
   const CategoryIcon = categoryIcons[question.category];
 
   return (
-    <div className="bg-card rounded-2xl border border-border p-6 md:p-8 shadow-lg">
+    <div className="bg-card rounded-2xl border border-border p-6 md:p-8 shadow-lg animate-scale-in">
       {/* Progress indicator */}
       <div className="flex items-center justify-between mb-6">
-        <Badge variant="secondary" className="gap-2">
+        <Badge variant="secondary" className="gap-2 transition-all duration-300 hover:scale-105">
           <CategoryIcon className="w-4 h-4" />
           {categoryLabels[question.category]}
         </Badge>
@@ -48,15 +48,15 @@ const QuestionCard = ({
       </div>
 
       {/* Progress bar */}
-      <div className="w-full h-2 bg-muted rounded-full mb-8">
+      <div className="w-full h-2 bg-muted rounded-full mb-8 overflow-hidden">
         <div
-          className="h-2 bg-primary rounded-full transition-all duration-300"
+          className="h-2 bg-primary rounded-full transition-all duration-500 ease-out"
           style={{ width: `${((currentIndex + 1) / totalQuestions) * 100}%` }}
         />
       </div>
 
       {/* Question text */}
-      <h2 className="text-xl md:text-2xl font-semibold mb-8 leading-relaxed">
+      <h2 className="text-xl md:text-2xl font-semibold mb-8 leading-relaxed animate-fade-in">
         {question.text}
       </h2>
 
@@ -66,19 +66,21 @@ const QuestionCard = ({
         onValueChange={(value) => onAnswer(parseFloat(value))}
         className="space-y-3"
       >
-        {answerOptions.map((option) => (
+        {answerOptions.map((option, index) => (
           <div
             key={option.value}
-            className={`flex items-center space-x-3 p-4 rounded-xl border transition-all cursor-pointer ${
+            className={`flex items-center space-x-3 p-4 rounded-xl border transition-all duration-300 cursor-pointer animate-fade-in-up hover:scale-[1.02] active:scale-[0.98] ${
               selectedValue === option.value
-                ? 'border-primary bg-primary/5'
-                : 'border-border hover:border-primary/50 hover:bg-muted/50'
+                ? 'border-primary bg-primary/5 shadow-md'
+                : 'border-border hover:border-primary/50 hover:bg-muted/50 hover:shadow-sm'
             }`}
+            style={{ animationDelay: `${index * 0.05}s` }}
             onClick={() => onAnswer(option.value)}
           >
             <RadioGroupItem
               value={option.value.toString()}
               id={`option-${option.value}`}
+              className="transition-transform duration-200"
             />
             <Label
               htmlFor={`option-${option.value}`}

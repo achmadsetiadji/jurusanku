@@ -19,17 +19,20 @@ const ResultCard = ({ result, rank }: ResultCardProps) => {
   };
 
   return (
-    <Card className={`overflow-hidden transition-all hover:shadow-lg ${
-      rank === 1 ? 'border-primary border-2 shadow-md' : ''
-    }`}>
+    <Card 
+      className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate-fade-in-up ${
+        rank === 1 ? 'border-primary border-2 shadow-md animate-pulse-glow' : 'hover:border-primary/30'
+      }`}
+      style={{ animationDelay: `${(rank - 1) * 0.1}s` }}
+    >
       <CardHeader className="pb-4">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
-            <div className="text-4xl">{result.major.icon}</div>
+            <div className="text-4xl transition-transform duration-300 hover:scale-125 hover:rotate-12">{result.major.icon}</div>
             <div>
               <div className="flex items-center gap-2 mb-1">
                 {rank <= 3 && (
-                  <Badge variant={rank === 1 ? 'default' : 'secondary'} className="text-xs">
+                  <Badge variant={rank === 1 ? 'default' : 'secondary'} className="text-xs transition-all duration-300 hover:scale-110">
                     #{rank}
                   </Badge>
                 )}
@@ -38,8 +41,8 @@ const ResultCard = ({ result, rank }: ResultCardProps) => {
             </div>
           </div>
           <div className="text-right">
-            <div className="text-3xl font-bold text-primary">{result.percentage}%</div>
-            <Badge variant={getBadgeVariant()} className="mt-1">
+            <div className="text-3xl font-bold text-primary transition-all duration-300 hover:scale-110">{result.percentage}%</div>
+            <Badge variant={getBadgeVariant()} className="mt-1 transition-all duration-300 hover:scale-105">
               {confidenceLevel}
             </Badge>
           </div>
@@ -56,7 +59,7 @@ const ResultCard = ({ result, rank }: ResultCardProps) => {
             </span>
             <span className="font-medium">{result.cfValue.toFixed(3)}</span>
           </div>
-          <Progress value={result.percentage} className="h-2" />
+          <Progress value={result.percentage} className="h-2 transition-all duration-500" />
         </div>
 
         {/* Description */}
@@ -72,7 +75,11 @@ const ResultCard = ({ result, rank }: ResultCardProps) => {
           </div>
           <div className="flex flex-wrap gap-2">
             {result.major.careers.map((career, index) => (
-              <Badge key={index} variant="outline" className="text-xs">
+              <Badge 
+                key={index} 
+                variant="outline" 
+                className="text-xs transition-all duration-300 hover:scale-105 hover:bg-primary/10 hover:border-primary/30"
+              >
                 {career}
               </Badge>
             ))}
