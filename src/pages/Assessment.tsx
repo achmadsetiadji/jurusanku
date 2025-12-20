@@ -238,7 +238,7 @@ const Assessment = () => {
 
                 <Button onClick={handleNext} size="lg" className="gap-2 group">
                   Mulai Bagian Ini
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 text-primary-foreground" />
                 </Button>
 
                 {currentQuestionIndex > 0 && (
@@ -247,7 +247,7 @@ const Assessment = () => {
                     onClick={handlePrevious} 
                     className="mt-4 gap-2"
                   >
-                    <ArrowLeft className="w-4 h-4" />
+                    <ArrowLeft className="w-4 h-4 text-muted-foreground" />
                     Kembali ke Pertanyaan Sebelumnya
                   </Button>
                 )}
@@ -278,9 +278,9 @@ const Assessment = () => {
                         isComplete ? 'bg-primary text-primary-foreground' : 'bg-muted'
                       }`}>
                         {isComplete ? (
-                          <CheckCircle2 className="w-5 h-5" />
+                          <CheckCircle2 className="w-5 h-5 text-primary-foreground" />
                         ) : (
-                          <CatIcon className="w-5 h-5" />
+                          <CatIcon className="w-5 h-5 text-primary" />
                         )}
                       </div>
                       <p className="text-xs font-medium truncate">{catConfig.label.split(' ')[0]}</p>
