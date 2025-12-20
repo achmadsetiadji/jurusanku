@@ -169,24 +169,24 @@ const About = () => {
               <h2 className="text-2xl font-bold mb-6 text-center animate-fade-in">Keunggulan Metode CF</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
-                  { title: 'Menangani Ketidakpastian', desc: 'Dapat mengelola informasi yang tidak pasti dan tidak lengkap dengan baik.', icon: Shield },
-                  { title: 'Mudah Diinterpretasi', desc: 'Hasil berupa persentase kepastian yang mudah dipahami pengguna.', icon: BarChart3 },
-                  { title: 'Fleksibel', desc: 'Dapat disesuaikan dengan menambah atau mengubah aturan dan nilai CF.', icon: Settings2 },
-                  { title: 'Berbasis Pengetahuan Pakar', desc: 'Nilai CF ditentukan berdasarkan pengetahuan dan pengalaman pakar.', icon: GraduationCap },
+                  { title: 'Menangani Ketidakpastian', desc: 'Dapat mengelola informasi yang tidak pasti dan tidak lengkap dengan baik.', icon: Shield, animation: 'group-hover:animate-pulse' },
+                  { title: 'Mudah Diinterpretasi', desc: 'Hasil berupa persentase kepastian yang mudah dipahami pengguna.', icon: BarChart3, animation: 'group-hover:scale-125 group-hover:-translate-y-0.5' },
+                  { title: 'Fleksibel', desc: 'Dapat disesuaikan dengan menambah atau mengubah aturan dan nilai CF.', icon: Settings2, animation: 'group-hover:rotate-180' },
+                  { title: 'Berbasis Pengetahuan Pakar', desc: 'Nilai CF ditentukan berdasarkan pengetahuan dan pengalaman pakar.', icon: GraduationCap, animation: 'group-hover:rotate-12 group-hover:scale-110' },
                 ].map((item, index) => {
                   const ItemIcon = item.icon;
                   return (
                   <div 
                     key={item.title}
-                    className="flex items-start gap-4 p-4 rounded-lg bg-card border border-border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/30 animate-fade-in-up"
+                    className="group flex items-start gap-4 p-5 rounded-xl bg-card border border-border transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:border-primary/40 animate-fade-in-up cursor-pointer"
                     style={{ animationDelay: `${0.5 + index * 0.1}s` }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 transition-transform duration-300 hover:scale-110">
-                      <ItemIcon className="w-5 h-5 text-primary" />
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 transition-all duration-500 group-hover:bg-primary group-hover:shadow-lg group-hover:shadow-primary/25">
+                      <ItemIcon className={`w-6 h-6 text-primary transition-all duration-500 group-hover:text-primary-foreground ${item.animation}`} />
                     </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">{item.title}</h3>
-                      <p className="text-sm text-muted-foreground">{item.desc}</p>
+                    <div className="pt-1">
+                      <h3 className="font-semibold mb-1 transition-colors duration-300 group-hover:text-primary">{item.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                     </div>
                   </div>
                   );
