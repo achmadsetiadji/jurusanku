@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
@@ -6,11 +6,15 @@ import Footer from '@/components/Footer';
 import ResultCard from '@/components/ResultCard';
 import { Button } from '@/components/ui/button';
 import { CFResult } from '@/lib/certaintyFactor';
-import { ArrowLeft, RotateCcw, Trophy } from 'lucide-react';
+import { ArrowLeft, RotateCcw, Trophy, Download, Loader2 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const Results = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [results, setResults] = useState<CFResult[]>([]);
+  const [isExporting, setIsExporting] = useState(false);
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const storedResults = sessionStorage.getItem('cfResults');
@@ -24,6 +28,136 @@ const Results = () => {
   const handleRetake = () => {
     sessionStorage.removeItem('cfResults');
     navigate('/assessment');
+  };
+
+  const handleExportPDF = async () => {
+    setIsExporting(true);
+    
+    try {
+      const { default: jsPDF } = await import('jspdf');
+      
+      const doc = new jsPDF();
+      const pageWidth = doc.internal.pageSize.getWidth();
+      
+      // Header
+      doc.setFontSize(24);
+      doc.setTextColor(230, 126, 34); // Primary orange color
+      doc.text('JurusanKu', pageWidth / 2, 20, { align: 'center' });
+      
+      doc.setFontSize(16);
+      doc.setTextColor(60, 60, 60);
+      doc.text('Hasil Rekomendasi Jurusan Kuliah', pageWidth / 2, 30, { align: 'center' });
+      
+      doc.setFontSize(10);
+      doc.setTextColor(120, 120, 120);
+      doc.text(`Tanggal: ${new Date().toLocaleDateString('id-ID', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      })}`, pageWidth / 2, 38, { align: 'center' });
+      
+      // Divider
+      doc.setDrawColor(230, 126, 34);
+      doc.setLineWidth(0.5);
+      doc.line(20, 45, pageWidth - 20, 45);
+      
+      // Top result highlight
+      const topResult = results[0];
+      doc.setFontSize(12);
+      doc.setTextColor(230, 126, 34);
+      doc.text('Rekomendasi Terbaik:', 20, 55);
+      
+      doc.setFontSize(18);
+      doc.setTextColor(40, 40, 40);
+      doc.text(`${topResult.major.icon} ${topResult.major.name}`, 20, 65);
+      
+      doc.setFontSize(14);
+      doc.setTextColor(230, 126, 34);
+      doc.text(`${topResult.percentage}% tingkat kepastian`, 20, 73);
+      
+      doc.setFontSize(10);
+      doc.setTextColor(100, 100, 100);
+      const descLines = doc.splitTextToSize(topResult.major.description, pageWidth - 40);
+      doc.text(descLines, 20, 82);
+      
+      // All results
+      let yPosition = 100;
+      
+      doc.setFontSize(14);
+      doc.setTextColor(40, 40, 40);
+      doc.text('Semua Rekomendasi:', 20, yPosition);
+      yPosition += 10;
+      
+      results.forEach((result, index) => {
+        if (yPosition > 270) {
+          doc.addPage();
+          yPosition = 20;
+        }
+        
+        // Result box
+        doc.setDrawColor(200, 200, 200);
+        doc.setFillColor(250, 250, 250);
+        doc.roundedRect(20, yPosition, pageWidth - 40, 25, 3, 3, 'FD');
+        
+        // Rank
+        doc.setFontSize(12);
+        doc.setTextColor(230, 126, 34);
+        doc.text(`#${index + 1}`, 25, yPosition + 10);
+        
+        // Major name and icon
+        doc.setFontSize(12);
+        doc.setTextColor(40, 40, 40);
+        doc.text(`${result.major.icon} ${result.major.name}`, 40, yPosition + 10);
+        
+        // Percentage
+        doc.setFontSize(14);
+        doc.setTextColor(230, 126, 34);
+        doc.text(`${result.percentage}%`, pageWidth - 30, yPosition + 10, { align: 'right' });
+        
+        // Careers
+        doc.setFontSize(8);
+        doc.setTextColor(120, 120, 120);
+        const careers = result.major.careers.slice(0, 3).join(' • ');
+        doc.text(careers, 40, yPosition + 18);
+        
+        yPosition += 30;
+      });
+      
+      // Footer
+      if (yPosition > 250) {
+        doc.addPage();
+        yPosition = 20;
+      }
+      
+      yPosition += 10;
+      doc.setDrawColor(230, 126, 34);
+      doc.setLineWidth(0.5);
+      doc.line(20, yPosition, pageWidth - 20, yPosition);
+      
+      yPosition += 10;
+      doc.setFontSize(9);
+      doc.setTextColor(150, 150, 150);
+      doc.text('Hasil ini dihasilkan menggunakan metode Certainty Factor.', pageWidth / 2, yPosition, { align: 'center' });
+      doc.text('Untuk informasi lebih lanjut, kunjungi jurusanku.id', pageWidth / 2, yPosition + 6, { align: 'center' });
+      
+      // Save
+      doc.save(`JurusanKu_Hasil_${new Date().toISOString().split('T')[0]}.pdf`);
+      
+      toast({
+        title: 'PDF Berhasil Diunduh',
+        description: 'Hasil asesmen telah disimpan dalam format PDF.',
+      });
+    } catch (error) {
+      console.error('Error exporting PDF:', error);
+      toast({
+        title: 'Gagal Mengunduh PDF',
+        description: 'Terjadi kesalahan saat membuat PDF. Silakan coba lagi.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   if (results.length === 0) {
@@ -41,7 +175,7 @@ const Results = () => {
       <div className="min-h-screen flex flex-col bg-background">
         <Navbar />
         <main className="flex-1 pt-24 pb-12">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4" ref={resultsRef}>
             {/* Header */}
             <div className="text-center mb-12 max-w-2xl mx-auto">
               <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 animate-float">
@@ -88,6 +222,19 @@ const Results = () => {
               >
                 <ArrowLeft className="w-4 h-4" />
                 Kembali ke Beranda
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={handleExportPDF}
+                disabled={isExporting}
+                className="gap-2 transition-all duration-300 hover:scale-105 active:scale-95"
+              >
+                {isExporting ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Download className="w-4 h-4" />
+                )}
+                {isExporting ? 'Membuat PDF...' : 'Unduh PDF'}
               </Button>
               <Button 
                 onClick={handleRetake} 
