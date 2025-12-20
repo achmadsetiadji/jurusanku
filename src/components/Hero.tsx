@@ -7,14 +7,21 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Modern gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-primary/5" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,hsl(var(--primary)/0.15),transparent)]" />
+      {/* Animated gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10 animate-gradient-shift" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,hsl(var(--primary)/0.2),transparent)] animate-pulse-slow" />
+      
+      {/* Moving gradient mesh */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/20 via-transparent to-secondary/20 animate-gradient-x" />
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-primary/10 to-transparent animate-gradient-y" />
+      </div>
       
       {/* Animated gradient orbs */}
-      <div className="absolute top-1/4 -left-20 w-80 h-80 bg-gradient-to-br from-primary/20 to-primary/5 rounded-full blur-3xl animate-float" />
-      <div className="absolute top-1/3 -right-20 w-96 h-96 bg-gradient-to-bl from-accent/30 to-transparent rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
-      <div className="absolute bottom-20 left-1/4 w-64 h-64 bg-gradient-to-tr from-primary/10 to-accent/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '4s' }} />
+      <div className="absolute top-1/4 -left-20 w-80 h-80 bg-gradient-to-br from-primary/30 to-secondary/10 rounded-full blur-3xl animate-float animate-pulse-glow" />
+      <div className="absolute top-1/3 -right-20 w-96 h-96 bg-gradient-to-bl from-secondary/30 to-primary/10 rounded-full blur-3xl animate-float animate-pulse-glow" style={{ animationDelay: '2s' }} />
+      <div className="absolute bottom-20 left-1/4 w-64 h-64 bg-gradient-to-tr from-primary/20 to-secondary/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '4s' }} />
+      <div className="absolute top-1/2 right-1/3 w-48 h-48 bg-gradient-to-tl from-secondary/25 to-primary/15 rounded-full blur-2xl animate-float" style={{ animationDelay: '3s' }} />
 
       {/* Floating decorative icons */}
       <div className="absolute top-32 left-[15%] hidden lg:block animate-float" style={{ animationDelay: '0.5s' }}>
