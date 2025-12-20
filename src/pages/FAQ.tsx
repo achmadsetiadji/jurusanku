@@ -198,8 +198,8 @@ const FAQ = () => {
                 >
                   <CardHeader className="bg-primary/5 border-b border-border">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center transition-all duration-500 group-hover:bg-primary group-hover:shadow-lg group-hover:shadow-primary/25">
-                        <CategoryIcon className={`w-6 h-6 text-primary transition-all duration-500 group-hover:text-primary-foreground ${category.iconAnimation}`} />
+                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center transition-all duration-500 group-hover:bg-primary group-hover:shadow-lg group-hover:shadow-primary/25 [&>svg]:text-primary [&>svg]:group-hover:text-primary-foreground">
+                        <CategoryIcon className={`w-6 h-6 transition-all duration-500 ${category.iconAnimation}`} />
                       </div>
                       <CardTitle className="text-xl transition-colors duration-300 group-hover:text-primary">{category.category}</CardTitle>
                     </div>
