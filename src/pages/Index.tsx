@@ -7,8 +7,8 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>SPK Pemilihan Jurusan Kuliah - Certainty Factor</title>
-        <meta name="description" content="Sistem Pendukung Keputusan untuk membantu siswa memilih jurusan kuliah yang tepat menggunakan metode Certainty Factor. Analisis minat, kemampuan, dan akademik." />
+        <title>JurusanKu - Temukan Jurusan Kuliah yang Tepat</title>
+        <meta name="description" content="JurusanKu adalah Sistem Pendukung Keputusan untuk membantu siswa memilih jurusan kuliah yang tepat menggunakan metode Certainty Factor." />
       </Helmet>
       <div className="min-h-screen flex flex-col">
         <Navbar />

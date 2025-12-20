@@ -35,7 +35,7 @@ const Results = () => {
   return (
     <>
       <Helmet>
-        <title>Hasil Rekomendasi - SPK Pemilihan Jurusan Kuliah</title>
+        <title>Hasil Rekomendasi - JurusanKu</title>
         <meta name="description" content="Lihat hasil rekomendasi jurusan kuliah berdasarkan analisis Certainty Factor dari jawaban Anda." />
       </Helmet>
       <div className="min-h-screen flex flex-col bg-background">

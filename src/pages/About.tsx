@@ -8,8 +8,8 @@ const About = () => {
   return (
     <>
       <Helmet>
-        <title>Tentang Sistem - SPK Pemilihan Jurusan Kuliah</title>
-        <meta name="description" content="Pelajari tentang metode Certainty Factor yang digunakan dalam Sistem Pendukung Keputusan Pemilihan Jurusan Kuliah." />
+        <title>Tentang JurusanKu - Metode Certainty Factor</title>
+        <meta name="description" content="Pelajari tentang metode Certainty Factor yang digunakan dalam JurusanKu untuk membantu pemilihan jurusan kuliah." />
       </Helmet>
       <div className="min-h-screen flex flex-col bg-background">
         <Navbar />

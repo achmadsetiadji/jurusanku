@@ -60,7 +60,7 @@ const Assessment = () => {
   return (
     <>
       <Helmet>
-        <title>Asesmen Jurusan - SPK Pemilihan Jurusan Kuliah</title>
+        <title>Asesmen Jurusan - JurusanKu</title>
         <meta name="description" content="Jawab pertanyaan tentang minat, kemampuan, dan prestasi akademik Anda untuk mendapatkan rekomendasi jurusan kuliah yang sesuai." />
       </Helmet>
       <div className="min-h-screen flex flex-col bg-background">
