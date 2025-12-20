@@ -36,15 +36,30 @@ const About = () => {
         <Navbar />
         <main className="flex-1 pt-24 pb-12">
           <div className="container mx-auto px-4">
-            {/* Header */}
-            <div className="text-center mb-12 max-w-3xl mx-auto">
-              <h1 className="text-3xl md:text-4xl font-bold mb-4 animate-fade-in">
-                Tentang Sistem Pendukung Keputusan
-              </h1>
-              <p className="text-lg text-muted-foreground animate-fade-in" style={{ animationDelay: '0.1s' }}>
-                Sistem ini menggunakan metode <strong>Certainty Factor (CF)</strong> untuk memberikan 
-                rekomendasi jurusan kuliah berdasarkan analisis minat, kemampuan, dan prestasi akademik.
-              </p>
+            {/* Header with Animated Gradient */}
+            <div className="relative text-center mb-12 max-w-3xl mx-auto overflow-hidden rounded-2xl p-8 md:p-12">
+              {/* Animated Gradient Background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/5 to-accent/20 animate-gradient-shift" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/10 to-transparent animate-pulse-slow" />
+              
+              {/* Floating Orbs for Parallax Effect */}
+              <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl animate-float" />
+              <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-accent/15 rounded-full blur-2xl animate-float-delayed" />
+              <div className="absolute top-1/2 left-1/4 w-20 h-20 bg-primary/5 rounded-full blur-xl animate-float-slow" />
+              
+              {/* Content */}
+              <div className="relative z-10">
+                <h1 className="text-3xl md:text-4xl font-bold mb-4 animate-fade-in bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent bg-[length:200%_auto] animate-text-shimmer">
+                  Tentang Sistem Pendukung Keputusan
+                </h1>
+                <p className="text-lg text-muted-foreground animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                  Sistem ini menggunakan metode <strong className="text-primary">Certainty Factor (CF)</strong> untuk memberikan 
+                  rekomendasi jurusan kuliah berdasarkan analisis minat, kemampuan, dan prestasi akademik.
+                </p>
+              </div>
+              
+              {/* Border Glow */}
+              <div className="absolute inset-0 rounded-2xl border border-primary/20 pointer-events-none" />
             </div>
 
             {/* What is CF */}
