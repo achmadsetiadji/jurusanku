@@ -77,7 +77,7 @@ export const calculateCF = (
       majorId: major.id,
       major,
       cfValue: Math.max(0, Math.min(1, majorCFs[major.id])),
-      percentage: Math.round(Math.max(0, Math.min(1, majorCFs[major.id])) * 100),
+      percentage: parseFloat((Math.max(0, Math.min(1, majorCFs[major.id])) * 100).toFixed(2)),
     }))
     .sort((a, b) => b.cfValue - a.cfValue);
 
