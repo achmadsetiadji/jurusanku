@@ -1,10 +1,32 @@
+import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Testimonials from '@/components/Testimonials';
 import Footer from '@/components/Footer';
+import PageLoader from '@/components/PageLoader';
 import { Helmet } from 'react-helmet-async';
 
 const Index = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate initial page load
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <>
+        <Navbar />
+        <PageLoader />
+      </>
+    );
+  }
+
   return (
     <>
       <Helmet>
