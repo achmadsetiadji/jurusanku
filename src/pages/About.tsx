@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -8,6 +8,8 @@ import { Brain, Calculator, CheckCircle2, Target, Workflow, Shield, BarChart3, S
 
 const About = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [scrollY, setScrollY] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -15,6 +17,15 @@ const About = () => {
     }, 800);
 
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   if (isLoading) {
@@ -26,26 +37,59 @@ const About = () => {
     );
   }
 
+  const caraKerjaCards = [
+    { 
+      title: '1. Pengumpulan Data', 
+      desc: 'Sistem mengumpulkan data melalui serangkaian pertanyaan tentang minat, kemampuan, dan prestasi akademik pengguna.',
+      icon: Target,
+      iconAnimation: 'group-hover:scale-125 group-hover:rotate-12',
+      delay: '0.1s'
+    },
+    { 
+      title: '2. Perhitungan CF', 
+      desc: 'Setiap jawaban dikalikan dengan nilai CF aturan, kemudian dikombinasikan menggunakan rumus CF kombinasi.',
+      icon: Calculator,
+      iconAnimation: 'group-hover:animate-bounce',
+      delay: '0.2s'
+    },
+    { 
+      title: '3. Rekomendasi', 
+      desc: 'Sistem menampilkan daftar jurusan dengan nilai CF tertinggi sebagai rekomendasi terbaik untuk pengguna.',
+      icon: CheckCircle2,
+      iconAnimation: 'group-hover:scale-110 group-hover:rotate-[360deg]',
+      delay: '0.3s'
+    },
+  ];
+
   return (
     <>
       <Helmet>
         <title>Tentang JurusanKu - Metode Certainty Factor</title>
         <meta name="description" content="Pelajari tentang metode Certainty Factor yang digunakan dalam JurusanKu untuk membantu pemilihan jurusan kuliah." />
       </Helmet>
-      <div className="min-h-screen flex flex-col bg-background">
+      <div className="min-h-screen flex flex-col bg-background overflow-x-hidden" ref={containerRef}>
         <Navbar />
         <main className="flex-1 pt-24 pb-12">
           <div className="container mx-auto px-4">
-            {/* Header with Animated Gradient */}
+            {/* Header with Animated Gradient & Parallax */}
             <div className="relative text-center mb-12 max-w-3xl mx-auto overflow-hidden rounded-2xl p-8 md:p-12">
               {/* Animated Gradient Background */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/5 to-accent/20 animate-gradient-shift" />
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/10 to-transparent animate-pulse-slow" />
               
-              {/* Floating Orbs for Parallax Effect */}
-              <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl animate-float" />
-              <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-accent/15 rounded-full blur-2xl animate-float-delayed" />
-              <div className="absolute top-1/2 left-1/4 w-20 h-20 bg-primary/5 rounded-full blur-xl animate-float-slow" />
+              {/* Floating Orbs with Parallax */}
+              <div 
+                className="absolute -top-10 -left-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl animate-float"
+                style={{ transform: `translateY(${scrollY * 0.1}px)` }}
+              />
+              <div 
+                className="absolute -bottom-10 -right-10 w-32 h-32 bg-accent/15 rounded-full blur-2xl animate-float-delayed"
+                style={{ transform: `translateY(${scrollY * -0.08}px)` }}
+              />
+              <div 
+                className="absolute top-1/2 left-1/4 w-20 h-20 bg-primary/5 rounded-full blur-xl animate-float-slow"
+                style={{ transform: `translateY(${scrollY * 0.05}px)` }}
+              />
               
               {/* Content */}
               <div className="relative z-10">
@@ -62,8 +106,11 @@ const About = () => {
               <div className="absolute inset-0 rounded-2xl border border-primary/20 pointer-events-none" />
             </div>
 
-            {/* What is CF */}
-            <section className="max-w-4xl mx-auto mb-16">
+            {/* What is CF - with Parallax */}
+            <section 
+              className="max-w-4xl mx-auto mb-16"
+              style={{ transform: `translateY(${scrollY * 0.02}px)` }}
+            >
               <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl animate-fade-in-up">
                 <CardHeader className="bg-primary/5 border-b border-border">
                   <div className="flex items-center gap-3">
@@ -95,59 +142,43 @@ const About = () => {
               </Card>
             </section>
 
-            {/* How it works */}
-            <section className="max-w-4xl mx-auto mb-16">
+            {/* How it works - with Parallax & Interactive Cards */}
+            <section 
+              className="max-w-4xl mx-auto mb-16"
+              style={{ transform: `translateY(${scrollY * 0.015}px)` }}
+            >
               <h2 className="text-2xl font-bold mb-6 text-center animate-fade-in">Cara Kerja Sistem</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:border-primary/30 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-                  <CardHeader>
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-2 transition-transform duration-300 hover:scale-110">
-                      <Target className="w-5 h-5 text-primary" />
-                    </div>
-                    <CardTitle className="text-lg">1. Pengumpulan Data</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">
-                      Sistem mengumpulkan data melalui serangkaian pertanyaan tentang minat, 
-                      kemampuan, dan prestasi akademik pengguna.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:border-primary/30 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-                  <CardHeader>
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-2 transition-transform duration-300 hover:scale-110">
-                      <Calculator className="w-5 h-5 text-primary" />
-                    </div>
-                    <CardTitle className="text-lg">2. Perhitungan CF</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">
-                      Setiap jawaban dikalikan dengan nilai CF aturan, kemudian dikombinasikan 
-                      menggunakan rumus CF kombinasi.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:border-primary/30 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-                  <CardHeader>
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-2 transition-transform duration-300 hover:scale-110">
-                      <CheckCircle2 className="w-5 h-5 text-primary" />
-                    </div>
-                    <CardTitle className="text-lg">3. Rekomendasi</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">
-                      Sistem menampilkan daftar jurusan dengan nilai CF tertinggi sebagai 
-                      rekomendasi terbaik untuk pengguna.
-                    </p>
-                  </CardContent>
-                </Card>
+                {caraKerjaCards.map((card) => {
+                  const CardIcon = card.icon;
+                  return (
+                    <Card 
+                      key={card.title}
+                      className="group transition-all duration-500 hover:shadow-xl hover:-translate-y-3 hover:border-primary/40 animate-fade-in-up cursor-pointer" 
+                      style={{ animationDelay: card.delay }}
+                    >
+                      <CardHeader>
+                        <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-2 transition-all duration-500 group-hover:bg-primary group-hover:shadow-lg group-hover:shadow-primary/25">
+                          <CardIcon className={`w-6 h-6 text-primary transition-all duration-500 group-hover:text-primary-foreground ${card.iconAnimation}`} />
+                        </div>
+                        <CardTitle className="text-lg transition-colors duration-300 group-hover:text-primary">{card.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-muted-foreground">
+                          {card.desc}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             </section>
 
-            {/* CF Combination Formula */}
-            <section className="max-w-4xl mx-auto mb-16">
+            {/* CF Combination Formula - with Parallax */}
+            <section 
+              className="max-w-4xl mx-auto mb-16"
+              style={{ transform: `translateY(${scrollY * 0.01}px)` }}
+            >
               <Card className="transition-all duration-300 hover:shadow-xl animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
                 <CardHeader>
                   <div className="flex items-center gap-3">
@@ -179,8 +210,11 @@ const About = () => {
               </Card>
             </section>
 
-            {/* Advantages */}
-            <section className="max-w-4xl mx-auto">
+            {/* Advantages - with Parallax */}
+            <section 
+              className="max-w-4xl mx-auto"
+              style={{ transform: `translateY(${scrollY * 0.005}px)` }}
+            >
               <h2 className="text-2xl font-bold mb-6 text-center animate-fade-in">Keunggulan Metode CF</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
