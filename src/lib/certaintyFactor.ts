@@ -77,33 +77,50 @@ export const calculateCF = (
     return { majorId: major.id, score: avgScore };
   });
 
-  // Find max and min for normalization
-  const maxScore = Math.max(...rawScores.map(s => s.score));
-  const minScore = Math.min(...rawScores.map(s => s.score));
-  const scoreRange = maxScore - minScore || 1;
+  // Sort by raw score first to establish ranking
+  const sortedScores = [...rawScores].sort((a, b) => b.score - a.score);
+  
+  // Create rank-based scoring with guaranteed unique values
+  const totalMajors = sortedScores.length;
+  const results: CFResult[] = sortedScores.map((item, index) => {
+    const major = majors.find(m => m.id === item.majorId)!;
+    
+    // Base score from rank position (higher rank = higher score)
+    const rankScore = (totalMajors - index) / totalMajors;
+    
+    // Add raw score influence for more nuance
+    const maxRaw = sortedScores[0]?.score || 1;
+    const minRaw = sortedScores[totalMajors - 1]?.score || 0;
+    const rawRange = maxRaw - minRaw || 1;
+    const normalizedRaw = (item.score - minRaw) / rawRange;
+    
+    // Combine rank and raw score (70% rank, 30% raw for good spread)
+    const combinedScore = (rankScore * 0.7) + (normalizedRaw * 0.3);
+    
+    // Scale to 35% - 95% range with unique micro-offset based on index
+    const baseScore = 0.35 + (combinedScore * 0.60);
+    const uniqueOffset = (totalMajors - index) * 0.001; // Small unique offset per rank
+    const finalScore = Math.min(0.95, baseScore + uniqueOffset);
+    
+    return {
+      majorId: major.id,
+      major,
+      cfValue: parseFloat(finalScore.toFixed(4)),
+      percentage: parseFloat((finalScore * 100).toFixed(2)),
+    };
+  });
 
-  // Convert to results array with relative normalization
-  const results: CFResult[] = majors
-    .map((major) => {
-      const rawScore = rawScores.find(s => s.majorId === major.id)?.score || 0;
-      
-      // Normalize to create differentiation (top gets ~95%, spread others)
-      const normalizedScore = ((rawScore - minScore) / scoreRange);
-      
-      // Apply curve to spread results more (avoid clustering at top)
-      const curvedScore = Math.pow(normalizedScore, 0.7); // Gentler curve
-      
-      // Scale to reasonable percentage range (40% - 95%)
-      const finalScore = 0.40 + (curvedScore * 0.55);
-      
-      return {
-        majorId: major.id,
-        major,
-        cfValue: parseFloat(finalScore.toFixed(4)),
-        percentage: parseFloat((finalScore * 100).toFixed(2)),
-      };
-    })
-    .sort((a, b) => b.cfValue - a.cfValue);
+  // Ensure all percentages are unique by adjusting duplicates
+  const seenPercentages = new Set<number>();
+  results.forEach((result, idx) => {
+    let pct = result.percentage;
+    while (seenPercentages.has(pct)) {
+      pct = parseFloat((pct - 0.01).toFixed(2));
+    }
+    seenPercentages.add(pct);
+    results[idx].percentage = pct;
+    results[idx].cfValue = parseFloat((pct / 100).toFixed(4));
+  });
 
   return results;
 };
