@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import logo from '@/assets/logo.png';
-import { Mail, MapPin, GraduationCap, Brain, Target, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Mail, MapPin, GraduationCap, Brain, Target } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -21,28 +20,6 @@ const Footer = () => {
 
   return (
     <footer className="bg-card border-t border-border">
-      {/* CTA Section */}
-      <div className="bg-primary/5 border-b border-border">
-        <div className="container mx-auto px-4 py-12">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 max-w-4xl mx-auto">
-            <div className="text-center md:text-left">
-              <h3 className="text-xl md:text-2xl font-bold mb-2">
-                Siap Menemukan Jurusan Impianmu?
-              </h3>
-              <p className="text-muted-foreground">
-                Mulai asesmen sekarang dan dapatkan rekomendasi terbaik
-              </p>
-            </div>
-            <Button asChild size="lg" className="group">
-              <Link to="/assessment" className="flex items-center gap-2">
-                Mulai Asesmen
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </div>
-
       {/* Main Footer */}
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
