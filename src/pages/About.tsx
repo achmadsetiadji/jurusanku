@@ -4,12 +4,14 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import PageLoader from '@/components/PageLoader';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Brain, Calculator, CheckCircle2, Target, Workflow, Shield, BarChart3, Settings2, GraduationCap } from 'lucide-react';
+import { Brain, Calculator, CheckCircle2, Target, Workflow, Shield, BarChart3, Settings2, GraduationCap, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const About = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [scrollY, setScrollY] = useState(0);
+  const [showStickyNav, setShowStickyNav] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Section refs for smooth scroll
@@ -28,7 +30,29 @@ const About = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      const currentScrollY = window.scrollY;
+      setScrollY(currentScrollY);
+      
+      // Show sticky nav after scrolling past header (around 400px)
+      setShowStickyNav(currentScrollY > 400);
+
+      // Determine active section
+      const sections = [
+        { id: 'cf', ref: cfSectionRef },
+        { id: 'cara-kerja', ref: caraKerjaSectionRef },
+        { id: 'rumus', ref: rumusSectionRef },
+        { id: 'keunggulan', ref: keunggulanSectionRef },
+      ];
+
+      for (const section of sections.reverse()) {
+        if (section.ref.current) {
+          const rect = section.ref.current.getBoundingClientRect();
+          if (rect.top <= 150) {
+            setActiveSection(section.id);
+            break;
+          }
+        }
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -37,6 +61,10 @@ const About = () => {
 
   const scrollToSection = (ref: React.RefObject<HTMLElement>) => {
     ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   if (isLoading) {
@@ -49,10 +77,10 @@ const About = () => {
   }
 
   const navItems = [
-    { label: 'Certainty Factor', ref: cfSectionRef },
-    { label: 'Cara Kerja', ref: caraKerjaSectionRef },
-    { label: 'Rumus CF', ref: rumusSectionRef },
-    { label: 'Keunggulan', ref: keunggulanSectionRef },
+    { id: 'cf', label: 'Certainty Factor', ref: cfSectionRef },
+    { id: 'cara-kerja', label: 'Cara Kerja', ref: caraKerjaSectionRef },
+    { id: 'rumus', label: 'Rumus CF', ref: rumusSectionRef },
+    { id: 'keunggulan', label: 'Keunggulan', ref: keunggulanSectionRef },
   ];
 
   const caraKerjaCards = [
@@ -87,6 +115,52 @@ const About = () => {
       </Helmet>
       <div className="min-h-screen flex flex-col bg-background overflow-x-hidden scroll-smooth" ref={containerRef}>
         <Navbar />
+
+        {/* Sticky Navigation */}
+        <div 
+          className={`fixed top-16 left-0 right-0 z-40 transition-all duration-500 ${
+            showStickyNav 
+              ? 'translate-y-0 opacity-100' 
+              : '-translate-y-full opacity-0 pointer-events-none'
+          }`}
+        >
+          <div className="bg-background/80 backdrop-blur-lg border-b border-border shadow-lg">
+            <div className="container mx-auto px-4">
+              <div className="flex items-center justify-between py-3">
+                <div className="flex items-center gap-2">
+                  <Brain className="w-5 h-5 text-primary" />
+                  <span className="font-semibold text-sm hidden sm:block">Tentang CF</span>
+                </div>
+                <div className="flex flex-wrap justify-center gap-1 sm:gap-2">
+                  {navItems.map((item) => (
+                    <Button
+                      key={item.id}
+                      variant={activeSection === item.id ? "default" : "ghost"}
+                      size="sm"
+                      onClick={() => scrollToSection(item.ref)}
+                      className={`text-xs sm:text-sm transition-all duration-300 ${
+                        activeSection === item.id 
+                          ? 'shadow-lg shadow-primary/25' 
+                          : 'hover:bg-primary/10'
+                      }`}
+                    >
+                      {item.label}
+                    </Button>
+                  ))}
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={scrollToTop}
+                  className="hover:bg-primary/10"
+                >
+                  <ChevronUp className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <main className="flex-1 pt-24 pb-12">
           <div className="container mx-auto px-4">
             {/* Header with Animated Gradient & Parallax */}
@@ -124,11 +198,11 @@ const About = () => {
               <div className="absolute inset-0 rounded-2xl border border-primary/20 pointer-events-none" />
             </div>
 
-            {/* Section Navigation */}
+            {/* Section Navigation (Static) */}
             <div className="flex flex-wrap justify-center gap-2 mb-12 animate-fade-in" style={{ animationDelay: '0.2s' }}>
               {navItems.map((item) => (
                 <Button
-                  key={item.label}
+                  key={item.id}
                   variant="outline"
                   size="sm"
                   onClick={() => scrollToSection(item.ref)}
@@ -142,7 +216,7 @@ const About = () => {
             {/* What is CF - with Parallax */}
             <section 
               ref={cfSectionRef}
-              className="max-w-4xl mx-auto mb-16 scroll-mt-28"
+              className="max-w-4xl mx-auto mb-16 scroll-mt-32"
               style={{ transform: `translateY(${scrollY * 0.02}px)` }}
             >
               <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl animate-fade-in-up">
@@ -179,7 +253,7 @@ const About = () => {
             {/* How it works - with Parallax & Interactive Cards */}
             <section 
               ref={caraKerjaSectionRef}
-              className="max-w-4xl mx-auto mb-16 scroll-mt-28"
+              className="max-w-4xl mx-auto mb-16 scroll-mt-32"
               style={{ transform: `translateY(${scrollY * 0.015}px)` }}
             >
               <h2 className="text-2xl font-bold mb-6 text-center animate-fade-in">Cara Kerja Sistem</h2>
@@ -212,7 +286,7 @@ const About = () => {
             {/* CF Combination Formula - with Parallax */}
             <section 
               ref={rumusSectionRef}
-              className="max-w-4xl mx-auto mb-16 scroll-mt-28"
+              className="max-w-4xl mx-auto mb-16 scroll-mt-32"
               style={{ transform: `translateY(${scrollY * 0.01}px)` }}
             >
               <Card className="transition-all duration-300 hover:shadow-xl animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
@@ -249,7 +323,7 @@ const About = () => {
             {/* Advantages - with Parallax */}
             <section 
               ref={keunggulanSectionRef}
-              className="max-w-4xl mx-auto scroll-mt-28"
+              className="max-w-4xl mx-auto scroll-mt-32"
               style={{ transform: `translateY(${scrollY * 0.005}px)` }}
             >
               <h2 className="text-2xl font-bold mb-6 text-center animate-fade-in">Keunggulan Metode CF</h2>

@@ -2,7 +2,11 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Brain, Target, Award, Sparkles, GraduationCap, BookOpen, Lightbulb } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const Hero = () => {
+interface HeroProps {
+  scrollY?: number;
+}
+
+const Hero = ({ scrollY = 0 }: HeroProps) => {
   const navigate = useNavigate();
 
   return (
@@ -17,30 +21,54 @@ const Hero = () => {
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-primary/10 to-transparent animate-gradient-y" />
       </div>
       
-      {/* Animated gradient orbs */}
-      <div className="absolute top-1/4 -left-20 w-80 h-80 bg-gradient-to-br from-primary/30 to-secondary/10 rounded-full blur-3xl animate-float animate-pulse-glow" />
-      <div className="absolute top-1/3 -right-20 w-96 h-96 bg-gradient-to-bl from-secondary/30 to-primary/10 rounded-full blur-3xl animate-float animate-pulse-glow" style={{ animationDelay: '2s' }} />
-      <div className="absolute bottom-20 left-1/4 w-64 h-64 bg-gradient-to-tr from-primary/20 to-secondary/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '4s' }} />
-      <div className="absolute top-1/2 right-1/3 w-48 h-48 bg-gradient-to-tl from-secondary/25 to-primary/15 rounded-full blur-2xl animate-float" style={{ animationDelay: '3s' }} />
+      {/* Animated gradient orbs with Parallax */}
+      <div 
+        className="absolute top-1/4 -left-20 w-80 h-80 bg-gradient-to-br from-primary/30 to-secondary/10 rounded-full blur-3xl animate-float animate-pulse-glow"
+        style={{ transform: `translateY(${scrollY * 0.15}px)` }}
+      />
+      <div 
+        className="absolute top-1/3 -right-20 w-96 h-96 bg-gradient-to-bl from-secondary/30 to-primary/10 rounded-full blur-3xl animate-float animate-pulse-glow" 
+        style={{ animationDelay: '2s', transform: `translateY(${scrollY * -0.1}px)` }} 
+      />
+      <div 
+        className="absolute bottom-20 left-1/4 w-64 h-64 bg-gradient-to-tr from-primary/20 to-secondary/20 rounded-full blur-3xl animate-float" 
+        style={{ animationDelay: '4s', transform: `translateY(${scrollY * 0.08}px)` }} 
+      />
+      <div 
+        className="absolute top-1/2 right-1/3 w-48 h-48 bg-gradient-to-tl from-secondary/25 to-primary/15 rounded-full blur-2xl animate-float" 
+        style={{ animationDelay: '3s', transform: `translateY(${scrollY * -0.05}px)` }} 
+      />
 
-      {/* Floating decorative icons */}
-      <div className="absolute top-32 left-[15%] hidden lg:block animate-float" style={{ animationDelay: '0.5s' }}>
-        <div className="w-14 h-14 rounded-2xl bg-card border border-border shadow-lg flex items-center justify-center rotate-12">
+      {/* Floating decorative icons with Parallax */}
+      <div 
+        className="absolute top-32 left-[15%] hidden lg:block animate-float" 
+        style={{ animationDelay: '0.5s', transform: `translateY(${scrollY * 0.2}px)` }}
+      >
+        <div className="w-14 h-14 rounded-2xl bg-card border border-border shadow-lg flex items-center justify-center rotate-12 transition-all duration-500 hover:scale-110 hover:shadow-xl hover:border-primary/30">
           <GraduationCap className="w-7 h-7 text-primary" />
         </div>
       </div>
-      <div className="absolute top-48 right-[12%] hidden lg:block animate-float" style={{ animationDelay: '1.5s' }}>
-        <div className="w-12 h-12 rounded-2xl bg-card border border-border shadow-lg flex items-center justify-center -rotate-12">
+      <div 
+        className="absolute top-48 right-[12%] hidden lg:block animate-float" 
+        style={{ animationDelay: '1.5s', transform: `translateY(${scrollY * -0.15}px)` }}
+      >
+        <div className="w-12 h-12 rounded-2xl bg-card border border-border shadow-lg flex items-center justify-center -rotate-12 transition-all duration-500 hover:scale-110 hover:shadow-xl hover:border-primary/30">
           <BookOpen className="w-6 h-6 text-primary" />
         </div>
       </div>
-      <div className="absolute bottom-40 left-[10%] hidden lg:block animate-float" style={{ animationDelay: '2.5s' }}>
-        <div className="w-10 h-10 rounded-xl bg-card border border-border shadow-lg flex items-center justify-center rotate-6">
+      <div 
+        className="absolute bottom-40 left-[10%] hidden lg:block animate-float" 
+        style={{ animationDelay: '2.5s', transform: `translateY(${scrollY * 0.12}px)` }}
+      >
+        <div className="w-10 h-10 rounded-xl bg-card border border-border shadow-lg flex items-center justify-center rotate-6 transition-all duration-500 hover:scale-110 hover:shadow-xl hover:border-primary/30">
           <Lightbulb className="w-5 h-5 text-primary" />
         </div>
       </div>
-      <div className="absolute bottom-32 right-[18%] hidden lg:block animate-float" style={{ animationDelay: '3s' }}>
-        <div className="w-16 h-16 rounded-2xl bg-card border border-border shadow-lg flex items-center justify-center -rotate-6">
+      <div 
+        className="absolute bottom-32 right-[18%] hidden lg:block animate-float" 
+        style={{ animationDelay: '3s', transform: `translateY(${scrollY * -0.18}px)` }}
+      >
+        <div className="w-16 h-16 rounded-2xl bg-card border border-border shadow-lg flex items-center justify-center -rotate-6 transition-all duration-500 hover:scale-110 hover:shadow-xl hover:border-primary/30">
           <Brain className="w-8 h-8 text-primary" />
         </div>
       </div>
@@ -48,7 +76,10 @@ const Hero = () => {
       {/* Grid pattern overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border)/0.3)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border)/0.3)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
 
-      <div className="container relative z-10 px-4 py-20">
+      <div 
+        className="container relative z-10 px-4 py-20"
+        style={{ transform: `translateY(${scrollY * 0.05}px)` }}
+      >
         <div className="max-w-5xl mx-auto text-center space-y-8">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm animate-fade-in-down">
@@ -60,7 +91,7 @@ const Hero = () => {
           <div className="space-y-4 animate-fade-in" style={{ animationDelay: '0.1s' }}>
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
               Temukan Jurusan
-              <span className="block bg-gradient-to-r from-primary via-primary to-accent-foreground bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-primary via-primary to-accent-foreground bg-clip-text text-transparent bg-[length:200%_auto] animate-text-shimmer">
                 Kuliah Impianmu
               </span>
             </h1>
@@ -117,10 +148,10 @@ const Hero = () => {
               className="group p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 hover:bg-card hover:border-primary/30 animate-fade-in-up"
               style={{ animationDelay: '0.5s' }}
             >
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-5 mx-auto transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-lg group-hover:shadow-primary/20">
-                <Brain className="w-7 h-7 text-primary" />
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-5 mx-auto transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-lg group-hover:shadow-primary/20 group-hover:bg-primary">
+                <Brain className="w-7 h-7 text-primary transition-colors duration-500 group-hover:text-primary-foreground" />
               </div>
-              <h3 className="font-semibold text-lg mb-2">Metode Certainty Factor</h3>
+              <h3 className="font-semibold text-lg mb-2 transition-colors duration-300 group-hover:text-primary">Metode Certainty Factor</h3>
               <p className="text-muted-foreground text-sm leading-relaxed">
                 Algoritma cerdas berbasis AI yang mengukur tingkat kepastian rekomendasi dari 63 pertanyaan mendalam
               </p>
@@ -130,10 +161,10 @@ const Hero = () => {
               className="group p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 hover:bg-card hover:border-primary/30 animate-fade-in-up"
               style={{ animationDelay: '0.6s' }}
             >
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-5 mx-auto transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-lg group-hover:shadow-primary/20">
-                <Target className="w-7 h-7 text-primary" />
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-5 mx-auto transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-lg group-hover:shadow-primary/20 group-hover:bg-primary">
+                <Target className="w-7 h-7 text-primary transition-colors duration-500 group-hover:text-primary-foreground" />
               </div>
-              <h3 className="font-semibold text-lg mb-2">55 Jurusan Populer</h3>
+              <h3 className="font-semibold text-lg mb-2 transition-colors duration-300 group-hover:text-primary">55 Jurusan Populer</h3>
               <p className="text-muted-foreground text-sm leading-relaxed">
                 Mencakup jurusan Teknik, Kesehatan, Bisnis, Hukum, Seni, MIPA, Pendidikan, dan lainnya
               </p>
@@ -143,10 +174,10 @@ const Hero = () => {
               className="group p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border transition-all duration-500 hover:shadow-2xl hover:-translate-y-3 hover:bg-card hover:border-primary/30 animate-fade-in-up"
               style={{ animationDelay: '0.7s' }}
             >
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-5 mx-auto transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-lg group-hover:shadow-primary/20">
-                <Award className="w-7 h-7 text-primary" />
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-5 mx-auto transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-lg group-hover:shadow-primary/20 group-hover:bg-primary">
+                <Award className="w-7 h-7 text-primary transition-colors duration-500 group-hover:text-primary-foreground" />
               </div>
-              <h3 className="font-semibold text-lg mb-2">Rekomendasi Personal</h3>
+              <h3 className="font-semibold text-lg mb-2 transition-colors duration-300 group-hover:text-primary">Rekomendasi Personal</h3>
               <p className="text-muted-foreground text-sm leading-relaxed">
                 Hasil dipersonalisasi dengan persentase kepastian untuk setiap jurusan yang direkomendasikan
               </p>
