@@ -257,7 +257,7 @@ const Results = () => {
                 onClick={() => navigate('/')} 
                 className="gap-2 transition-all duration-300 hover:scale-105 active:scale-95"
               >
-                <ArrowLeft className="w-4 h-4" />
+                <ArrowLeft className="w-4 h-4 text-foreground" />
                 Kembali ke Beranda
               </Button>
               <Button 
@@ -267,9 +267,9 @@ const Results = () => {
                 className="gap-2 transition-all duration-300 hover:scale-105 active:scale-95"
               >
                 {isExporting ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin text-foreground" />
                 ) : (
-                  <Download className="w-4 h-4" />
+                  <Download className="w-4 h-4 text-foreground" />
                 )}
                 {isExporting ? 'Membuat PDF...' : 'Unduh PDF'}
               </Button>
@@ -277,7 +277,7 @@ const Results = () => {
                 onClick={handleRetake} 
                 className="gap-2 transition-all duration-300 hover:scale-105 active:scale-95"
               >
-                <RotateCcw className="w-4 h-4" />
+                <RotateCcw className="w-4 h-4 text-primary-foreground" />
                 Ulangi Asesmen
               </Button>
             </div>

@@ -81,7 +81,7 @@ const Hero = () => {
               onClick={() => navigate('/assessment')}
             >
               Mulai Asesmen Gratis
-              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1 text-primary-foreground" />
             </Button>
             <Button 
               variant="outline" 
