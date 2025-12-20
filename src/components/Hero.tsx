@@ -94,7 +94,7 @@ const Hero = () => {
             </div>
             <div className="w-px bg-border hidden sm:block" />
             <div className="text-center">
-              <p className="text-3xl md:text-4xl font-bold text-primary">32</p>
+              <p className="text-3xl md:text-4xl font-bold text-primary">63</p>
               <p className="text-sm text-muted-foreground">Pertanyaan Asesmen</p>
             </div>
             <div className="w-px bg-border hidden sm:block" />

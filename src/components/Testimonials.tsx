@@ -40,9 +40,9 @@ const stats = [
   },
   {
     icon: Star,
-    value: '4.9/5',
-    label: 'Rating',
-    description: 'Kepuasan pengguna',
+    value: '63',
+    label: 'Pertanyaan',
+    description: 'Asesmen komprehensif',
   },
   {
     icon: TrendingUp,
