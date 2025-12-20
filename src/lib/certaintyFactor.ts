@@ -44,41 +44,65 @@ export const calculateCF = (
   questions: Question[],
   majors: Major[]
 ): CFResult[] => {
-  const majorCFs: { [key: string]: number } = {};
+  const majorScores: { [key: string]: { total: number; count: number; weighted: number } } = {};
 
-  // Initialize all majors with 0
+  // Initialize all majors
   majors.forEach((major) => {
-    majorCFs[major.id] = 0;
+    majorScores[major.id] = { total: 0, count: 0, weighted: 0 };
   });
 
-  // Process each answer
+  // Process each answer - use weighted average instead of CF combination
   answers.forEach((answer) => {
     const question = questions.find((q) => q.id === answer.questionId);
     if (!question) return;
 
-    // Calculate CF for each related major
+    // Calculate score for each related major
     question.relatedMajors.forEach((relation) => {
-      const cfEvidence = answer.value * relation.cf; // CF = MB * CF_rule
+      const weight = relation.cf; // Use CF as weight
+      const score = answer.value * weight;
       
-      if (majorCFs[relation.majorId] === 0) {
-        majorCFs[relation.majorId] = cfEvidence;
-      } else {
-        majorCFs[relation.majorId] = combineCF(
-          majorCFs[relation.majorId],
-          cfEvidence
-        );
-      }
+      majorScores[relation.majorId].total += score;
+      majorScores[relation.majorId].count += 1;
+      majorScores[relation.majorId].weighted += weight;
     });
   });
 
-  // Convert to results array and sort by CF value
+  // Calculate normalized scores
+  const rawScores = majors.map((major) => {
+    const scores = majorScores[major.id];
+    if (scores.count === 0 || scores.weighted === 0) return { majorId: major.id, score: 0 };
+    
+    // Weighted average normalized by total possible weight
+    const avgScore = scores.total / scores.weighted;
+    return { majorId: major.id, score: avgScore };
+  });
+
+  // Find max and min for normalization
+  const maxScore = Math.max(...rawScores.map(s => s.score));
+  const minScore = Math.min(...rawScores.map(s => s.score));
+  const scoreRange = maxScore - minScore || 1;
+
+  // Convert to results array with relative normalization
   const results: CFResult[] = majors
-    .map((major) => ({
-      majorId: major.id,
-      major,
-      cfValue: Math.max(0, Math.min(1, majorCFs[major.id])),
-      percentage: parseFloat((Math.max(0, Math.min(1, majorCFs[major.id])) * 100).toFixed(2)),
-    }))
+    .map((major) => {
+      const rawScore = rawScores.find(s => s.majorId === major.id)?.score || 0;
+      
+      // Normalize to create differentiation (top gets ~95%, spread others)
+      const normalizedScore = ((rawScore - minScore) / scoreRange);
+      
+      // Apply curve to spread results more (avoid clustering at top)
+      const curvedScore = Math.pow(normalizedScore, 0.7); // Gentler curve
+      
+      // Scale to reasonable percentage range (40% - 95%)
+      const finalScore = 0.40 + (curvedScore * 0.55);
+      
+      return {
+        majorId: major.id,
+        major,
+        cfValue: parseFloat(finalScore.toFixed(4)),
+        percentage: parseFloat((finalScore * 100).toFixed(2)),
+      };
+    })
     .sort((a, b) => b.cfValue - a.cfValue);
 
   return results;
