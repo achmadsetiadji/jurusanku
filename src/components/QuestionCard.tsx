@@ -58,27 +58,40 @@ const QuestionCard = ({
         {answerOptions.map((option, index) => {
           const isSelected = selectedValue === option.value;
           
-          // Color coding for answers
-          let optionStyle = '';
-          if (isSelected) {
-            if (option.value >= 0.75) {
-              optionStyle = 'border-green-500 bg-green-500/10';
-            } else if (option.value >= 0.5) {
-              optionStyle = 'border-primary bg-primary/10';
-            } else if (option.value >= 0.25) {
-              optionStyle = 'border-orange-500 bg-orange-500/10';
-            } else {
-              optionStyle = 'border-red-500 bg-red-500/10';
+          // Color coding for answers based on value
+          const getOptionColors = (value: number, selected: boolean) => {
+            if (value === 0) { // Sangat Tidak Setuju - Merah
+              return selected 
+                ? 'border-red-500 bg-red-500/15 text-red-700 dark:text-red-400' 
+                : 'hover:border-red-300 hover:bg-red-50 dark:hover:bg-red-950/30';
+            } else if (value === 0.25) { // Tidak Setuju - Agak Merah
+              return selected 
+                ? 'border-red-400 bg-red-400/15 text-red-600 dark:text-red-400' 
+                : 'hover:border-red-200 hover:bg-red-50/50 dark:hover:bg-red-950/20';
+            } else if (value === 0.5) { // Netral - Oranye
+              return selected 
+                ? 'border-orange-500 bg-orange-500/15 text-orange-700 dark:text-orange-400' 
+                : 'hover:border-orange-300 hover:bg-orange-50 dark:hover:bg-orange-950/30';
+            } else if (value === 0.75) { // Setuju - Agak Hijau
+              return selected 
+                ? 'border-green-400 bg-green-400/15 text-green-600 dark:text-green-400' 
+                : 'hover:border-green-200 hover:bg-green-50/50 dark:hover:bg-green-950/20';
+            } else { // Sangat Setuju - Hijau
+              return selected 
+                ? 'border-green-500 bg-green-500/15 text-green-700 dark:text-green-400' 
+                : 'hover:border-green-300 hover:bg-green-50 dark:hover:bg-green-950/30';
             }
-          }
+          };
+          
+          const optionColors = getOptionColors(option.value, isSelected);
           
           return (
             <div
               key={option.value}
               className={`flex items-center space-x-3 p-4 rounded-xl border-2 transition-all duration-300 cursor-pointer animate-fade-in-up hover:scale-[1.02] active:scale-[0.98] ${
                 isSelected
-                  ? `${optionStyle} shadow-md`
-                  : 'border-border hover:border-primary/50 hover:bg-muted/50 hover:shadow-sm'
+                  ? `${optionColors} shadow-md`
+                  : `border-border ${optionColors}`
               }`}
               style={{ animationDelay: `${index * 0.05}s` }}
               onClick={() => onAnswer(option.value)}
