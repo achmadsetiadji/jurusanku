@@ -3,6 +3,7 @@ import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '@/assets/logo.png';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,8 +42,9 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
+          {/* CTA Button & Theme Toggle */}
+          <div className="hidden md:flex items-center gap-2">
+            <ThemeToggle />
             <Button asChild className="transition-all duration-300 hover:scale-105 active:scale-95">
               <Link to="/assessment">Mulai Asesmen</Link>
             </Button>
@@ -79,11 +81,14 @@ const Navbar = () => {
                   {link.label}
                 </Link>
               ))}
-              <Button asChild className="mt-2 animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
-                <Link to="/assessment" onClick={() => setIsMenuOpen(false)}>
-                  Mulai Asesmen
-                </Link>
-              </Button>
+              <div className="flex items-center gap-2 mt-2 animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
+                <ThemeToggle />
+                <Button asChild className="flex-1">
+                  <Link to="/assessment" onClick={() => setIsMenuOpen(false)}>
+                    Mulai Asesmen
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         )}
