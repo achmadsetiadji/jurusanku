@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import PageLoader from '@/components/PageLoader';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Brain, Calculator, CheckCircle2, Target, Workflow, Zap } from 'lucide-react';
+import { Brain, Calculator, CheckCircle2, Target, Workflow, Shield, BarChart3, Settings2, GraduationCap } from 'lucide-react';
 
 const About = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -169,25 +169,28 @@ const About = () => {
               <h2 className="text-2xl font-bold mb-6 text-center animate-fade-in">Keunggulan Metode CF</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
-                  { title: 'Menangani Ketidakpastian', desc: 'Dapat mengelola informasi yang tidak pasti dan tidak lengkap dengan baik.' },
-                  { title: 'Mudah Diinterpretasi', desc: 'Hasil berupa persentase kepastian yang mudah dipahami pengguna.' },
-                  { title: 'Fleksibel', desc: 'Dapat disesuaikan dengan menambah atau mengubah aturan dan nilai CF.' },
-                  { title: 'Berbasis Pengetahuan Pakar', desc: 'Nilai CF ditentukan berdasarkan pengetahuan dan pengalaman pakar.' },
-                ].map((item, index) => (
+                  { title: 'Menangani Ketidakpastian', desc: 'Dapat mengelola informasi yang tidak pasti dan tidak lengkap dengan baik.', icon: Shield },
+                  { title: 'Mudah Diinterpretasi', desc: 'Hasil berupa persentase kepastian yang mudah dipahami pengguna.', icon: BarChart3 },
+                  { title: 'Fleksibel', desc: 'Dapat disesuaikan dengan menambah atau mengubah aturan dan nilai CF.', icon: Settings2 },
+                  { title: 'Berbasis Pengetahuan Pakar', desc: 'Nilai CF ditentukan berdasarkan pengetahuan dan pengalaman pakar.', icon: GraduationCap },
+                ].map((item, index) => {
+                  const ItemIcon = item.icon;
+                  return (
                   <div 
                     key={item.title}
                     className="flex items-start gap-4 p-4 rounded-lg bg-card border border-border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/30 animate-fade-in-up"
                     style={{ animationDelay: `${0.5 + index * 0.1}s` }}
                   >
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 transition-transform duration-300 hover:scale-110">
-                      <Zap className="w-5 h-5 text-primary" />
+                      <ItemIcon className="w-5 h-5 text-primary" />
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">{item.title}</h3>
                       <p className="text-sm text-muted-foreground">{item.desc}</p>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </section>
           </div>
