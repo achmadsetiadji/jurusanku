@@ -89,12 +89,12 @@ const Hero = () => {
           {/* Stats */}
           <div className="flex flex-wrap justify-center gap-8 pt-8 animate-fade-in" style={{ animationDelay: '0.4s' }}>
             <div className="text-center">
-              <p className="text-3xl md:text-4xl font-bold text-primary">10+</p>
+              <p className="text-3xl md:text-4xl font-bold text-primary">16</p>
               <p className="text-sm text-muted-foreground">Jurusan Tersedia</p>
             </div>
             <div className="w-px bg-border hidden sm:block" />
             <div className="text-center">
-              <p className="text-3xl md:text-4xl font-bold text-primary">20+</p>
+              <p className="text-3xl md:text-4xl font-bold text-primary">32</p>
               <p className="text-sm text-muted-foreground">Pertanyaan Asesmen</p>
             </div>
             <div className="w-px bg-border hidden sm:block" />
