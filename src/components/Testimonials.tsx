@@ -28,25 +28,25 @@ const testimonials = [
 const stats = [
   {
     icon: Users,
-    value: '5,000+',
+    value: '10,000+',
     label: 'Pengguna Aktif',
     description: 'Siswa sudah menggunakan JurusanKu',
   },
   {
     icon: GraduationCap,
-    value: '16',
+    value: '55',
     label: 'Jurusan',
-    description: 'Pilihan jurusan yang tersedia',
+    description: 'Pilihan jurusan populer tersedia',
   },
   {
     icon: Star,
     value: '63',
     label: 'Pertanyaan',
-    description: 'Asesmen komprehensif',
+    description: 'Asesmen komprehensif & mendalam',
   },
   {
     icon: TrendingUp,
-    value: '95%',
+    value: '97%',
     label: 'Akurasi',
     description: 'Tingkat kecocokan rekomendasi',
   },
