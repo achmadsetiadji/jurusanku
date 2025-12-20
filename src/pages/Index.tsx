@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
+import Testimonials from '@/components/Testimonials';
 import Footer from '@/components/Footer';
 import { Helmet } from 'react-helmet-async';
 
@@ -14,6 +15,7 @@ const Index = () => {
         <Navbar />
         <main className="flex-1 pt-16">
           <Hero />
+          <Testimonials />
         </main>
         <Footer />
       </div>
