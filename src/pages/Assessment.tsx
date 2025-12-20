@@ -316,11 +316,11 @@ const Assessment = () => {
                 </div>
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                   <div className="flex items-center gap-1">
-                    <Clock className="w-4 h-4" />
+                    <Clock className="w-4 h-4 text-primary" />
                     <span>~{estimatedMinutes} mnt</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <CheckCircle2 className="w-4 h-4" />
+                    <CheckCircle2 className="w-4 h-4 text-primary" />
                     <span>{answeredCount}/{questions.length}</span>
                   </div>
                 </div>
@@ -369,7 +369,7 @@ const Assessment = () => {
                 disabled={currentQuestionIndex === 0}
                 className="gap-2 transition-all hover:scale-105 active:scale-95"
               >
-                <ArrowLeft className="w-4 h-4" />
+                <ArrowLeft className="w-4 h-4 text-foreground" />
                 <span className="hidden sm:inline">Sebelumnya</span>
               </Button>
 
@@ -378,7 +378,7 @@ const Assessment = () => {
                 onClick={handleReset}
                 className="gap-2 text-muted-foreground transition-all hover:scale-105"
               >
-                <RotateCcw className="w-4 h-4" />
+                <RotateCcw className="w-4 h-4 text-muted-foreground" />
                 <span className="hidden sm:inline">Reset</span>
               </Button>
 
@@ -389,13 +389,13 @@ const Assessment = () => {
               >
                 {isLastQuestion ? (
                   <>
-                    <Trophy className="w-4 h-4" />
+                    <Trophy className="w-4 h-4 text-primary-foreground" />
                     Lihat Hasil
                   </>
                 ) : (
                   <>
                     <span className="hidden sm:inline">Selanjutnya</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-4 h-4 text-primary-foreground" />
                   </>
                 )}
               </Button>

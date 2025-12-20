@@ -167,7 +167,7 @@ const FAQ = () => {
                 <Button asChild size="lg" className="gap-2 group">
                   <Link to="/assessment">
                     Mulai Asesmen Sekarang
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 text-primary-foreground" />
                   </Link>
                 </Button>
               </Card>

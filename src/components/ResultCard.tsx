@@ -54,7 +54,7 @@ const ResultCard = ({ result, rank }: ResultCardProps) => {
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground flex items-center gap-1">
-              <TrendingUp className="w-4 h-4" />
+              <TrendingUp className="w-4 h-4 text-primary" />
               Certainty Factor
             </span>
             <span className="font-medium">{result.cfValue.toFixed(3)}</span>
