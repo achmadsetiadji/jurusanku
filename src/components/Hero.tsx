@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Brain, Target, Award } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import logo from '@/assets/logo.png';
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -16,9 +17,9 @@ const Hero = () => {
 
       <div className="container relative z-10 px-4 py-20">
         <div className="max-w-4xl mx-auto text-center space-y-8">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
-            <Brain className="w-4 h-4 text-primary" />
+          {/* Logo Badge */}
+          <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full bg-primary/10 border border-primary/20">
+            <img src={logo} alt="JurusanKu" className="w-8 h-8 object-contain" />
             <span className="text-sm font-medium text-primary">Sistem Pendukung Keputusan</span>
           </div>
 
@@ -30,7 +31,7 @@ const Hero = () => {
 
           {/* Description */}
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Sistem rekomendasi cerdas berbasis <strong>Certainty Factor</strong> yang menganalisis 
+            <strong>JurusanKu</strong> adalah sistem rekomendasi cerdas berbasis <strong>Certainty Factor</strong> yang menganalisis 
             minat, kemampuan, dan prestasi akademik untuk membantu Anda memilih jurusan kuliah yang sesuai.
           </p>
 
