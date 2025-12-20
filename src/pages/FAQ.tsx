@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -18,6 +18,7 @@ const faqData = [
   {
     category: 'Umum',
     icon: HelpCircle,
+    iconAnimation: 'group-hover:rotate-12 group-hover:scale-110',
     questions: [
       {
         question: 'Apa itu JurusanKu?',
@@ -40,6 +41,7 @@ const faqData = [
   {
     category: 'Metode Certainty Factor',
     icon: Brain,
+    iconAnimation: 'group-hover:animate-pulse',
     questions: [
       {
         question: 'Apa itu metode Certainty Factor (CF)?',
@@ -62,6 +64,7 @@ const faqData = [
   {
     category: 'Hasil & Rekomendasi',
     icon: Target,
+    iconAnimation: 'group-hover:scale-125 group-hover:rotate-12',
     questions: [
       {
         question: 'Apakah hasil rekomendasi 100% akurat?',
@@ -84,6 +87,7 @@ const faqData = [
   {
     category: 'Teknis',
     icon: Calculator,
+    iconAnimation: 'group-hover:rotate-180',
     questions: [
       {
         question: 'Browser apa saja yang didukung?',
@@ -103,6 +107,8 @@ const faqData = [
 
 const FAQ = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [scrollY, setScrollY] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -110,6 +116,15 @@ const FAQ = () => {
     }, 800);
 
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   if (isLoading) {
@@ -127,37 +142,66 @@ const FAQ = () => {
         <title>FAQ - Pertanyaan Umum - JurusanKu</title>
         <meta name="description" content="Temukan jawaban untuk pertanyaan umum tentang JurusanKu, metode Certainty Factor, dan cara menggunakan sistem rekomendasi jurusan kuliah." />
       </Helmet>
-      <div className="min-h-screen flex flex-col bg-background">
+      <div className="min-h-screen flex flex-col bg-background overflow-x-hidden scroll-smooth" ref={containerRef}>
         <Navbar />
         <main className="flex-1 pt-24 pb-12">
           <div className="container mx-auto px-4">
-            {/* Header */}
-            <div className="text-center mb-12 max-w-3xl mx-auto">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 animate-float">
-                <HelpCircle className="w-8 h-8 text-primary" />
+            {/* Header with Animated Gradient & Parallax */}
+            <div className="relative text-center mb-12 max-w-3xl mx-auto overflow-hidden rounded-2xl p-8 md:p-12">
+              {/* Animated Gradient Background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/5 to-accent/20 animate-gradient-shift" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/10 to-transparent animate-pulse-slow" />
+              
+              {/* Floating Orbs with Parallax */}
+              <div 
+                className="absolute -top-10 -left-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl animate-float"
+                style={{ transform: `translateY(${scrollY * 0.1}px)` }}
+              />
+              <div 
+                className="absolute -bottom-10 -right-10 w-32 h-32 bg-accent/15 rounded-full blur-2xl animate-float-delayed"
+                style={{ transform: `translateY(${scrollY * -0.08}px)` }}
+              />
+              <div 
+                className="absolute top-1/2 left-1/4 w-20 h-20 bg-primary/5 rounded-full blur-xl animate-float-slow"
+                style={{ transform: `translateY(${scrollY * 0.05}px)` }}
+              />
+              
+              {/* Content */}
+              <div className="relative z-10">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 animate-float transition-all duration-500 hover:bg-primary hover:shadow-lg hover:shadow-primary/25">
+                  <HelpCircle className="w-8 h-8 text-primary transition-all duration-500 hover:text-primary-foreground" />
+                </div>
+                <h1 className="text-3xl md:text-4xl font-bold mb-4 animate-fade-in bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent bg-[length:200%_auto] animate-text-shimmer">
+                  Pertanyaan yang Sering Diajukan
+                </h1>
+                <p className="text-lg text-muted-foreground animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                  Temukan jawaban untuk pertanyaan umum tentang JurusanKu dan metode Certainty Factor
+                </p>
               </div>
-              <h1 className="text-3xl md:text-4xl font-bold mb-4 animate-fade-in">
-                Pertanyaan yang Sering Diajukan
-              </h1>
-              <p className="text-lg text-muted-foreground animate-fade-in" style={{ animationDelay: '0.1s' }}>
-                Temukan jawaban untuk pertanyaan umum tentang JurusanKu dan metode Certainty Factor
-              </p>
+              
+              {/* Border Glow */}
+              <div className="absolute inset-0 rounded-2xl border border-primary/20 pointer-events-none" />
             </div>
 
             {/* FAQ Categories */}
             <div className="max-w-4xl mx-auto space-y-8">
-              {faqData.map((category, categoryIndex) => (
+              {faqData.map((category, categoryIndex) => {
+                const CategoryIcon = category.icon;
+                return (
                 <Card 
                   key={category.category}
-                  className="overflow-hidden transition-all duration-300 hover:shadow-xl animate-fade-in-up"
-                  style={{ animationDelay: `${categoryIndex * 0.1}s` }}
+                  className="group overflow-hidden transition-all duration-500 hover:shadow-xl hover:-translate-y-1 hover:border-primary/30 animate-fade-in-up"
+                  style={{ 
+                    animationDelay: `${categoryIndex * 0.1}s`,
+                    transform: `translateY(${scrollY * (0.01 - categoryIndex * 0.002)}px)` 
+                  }}
                 >
                   <CardHeader className="bg-primary/5 border-b border-border">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <category.icon className="w-5 h-5 text-primary" />
+                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center transition-all duration-500 group-hover:bg-primary group-hover:shadow-lg group-hover:shadow-primary/25">
+                        <CategoryIcon className={`w-6 h-6 text-primary transition-all duration-500 group-hover:text-primary-foreground ${category.iconAnimation}`} />
                       </div>
-                      <CardTitle className="text-xl">{category.category}</CardTitle>
+                      <CardTitle className="text-xl transition-colors duration-300 group-hover:text-primary">{category.category}</CardTitle>
                     </div>
                   </CardHeader>
                   <CardContent className="pt-4">
@@ -175,22 +219,35 @@ const FAQ = () => {
                     </Accordion>
                   </CardContent>
                 </Card>
-              ))}
+                );
+              })}
             </div>
 
-            {/* CTA Section */}
-            <div className="max-w-2xl mx-auto mt-16 text-center animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
-              <Card className="p-8 bg-gradient-to-br from-primary/5 via-card to-accent/5 border-primary/20">
-                <h3 className="text-2xl font-bold mb-4">Masih Punya Pertanyaan?</h3>
-                <p className="text-muted-foreground mb-6">
-                  Jika pertanyaan Anda belum terjawab, langsung coba asesmen kami untuk menemukan jurusan yang cocok!
-                </p>
-                <Button asChild size="lg" className="gap-2 group">
-                  <Link to="/assessment">
-                    Mulai Asesmen Sekarang
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 text-primary-foreground" />
-                  </Link>
-                </Button>
+            {/* CTA Section with Parallax */}
+            <div 
+              className="max-w-2xl mx-auto mt-16 text-center animate-fade-in-up" 
+              style={{ 
+                animationDelay: '0.5s',
+                transform: `translateY(${scrollY * 0.005}px)` 
+              }}
+            >
+              <Card className="group relative overflow-hidden p-8 border-primary/20 transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
+                {/* Animated Background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-card to-accent/5 animate-gradient-shift" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/5 to-transparent animate-pulse-slow" />
+                
+                <div className="relative z-10">
+                  <h3 className="text-2xl font-bold mb-4 transition-colors duration-300 group-hover:text-primary">Masih Punya Pertanyaan?</h3>
+                  <p className="text-muted-foreground mb-6">
+                    Jika pertanyaan Anda belum terjawab, langsung coba asesmen kami untuk menemukan jurusan yang cocok!
+                  </p>
+                  <Button asChild size="lg" className="gap-2 group/btn transition-all duration-300 hover:shadow-lg hover:shadow-primary/25">
+                    <Link to="/assessment">
+                      Mulai Asesmen Sekarang
+                      <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1 text-primary-foreground" />
+                    </Link>
+                  </Button>
+                </div>
               </Card>
             </div>
           </div>

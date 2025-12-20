@@ -5,11 +5,18 @@ import Footer from '@/components/Footer';
 import PageLoader from '@/components/PageLoader';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Brain, Calculator, CheckCircle2, Target, Workflow, Shield, BarChart3, Settings2, GraduationCap } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const About = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [scrollY, setScrollY] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Section refs for smooth scroll
+  const cfSectionRef = useRef<HTMLElement>(null);
+  const caraKerjaSectionRef = useRef<HTMLElement>(null);
+  const rumusSectionRef = useRef<HTMLElement>(null);
+  const keunggulanSectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -28,6 +35,10 @@ const About = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const scrollToSection = (ref: React.RefObject<HTMLElement>) => {
+    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   if (isLoading) {
     return (
       <>
@@ -36,6 +47,13 @@ const About = () => {
       </>
     );
   }
+
+  const navItems = [
+    { label: 'Certainty Factor', ref: cfSectionRef },
+    { label: 'Cara Kerja', ref: caraKerjaSectionRef },
+    { label: 'Rumus CF', ref: rumusSectionRef },
+    { label: 'Keunggulan', ref: keunggulanSectionRef },
+  ];
 
   const caraKerjaCards = [
     { 
@@ -67,12 +85,12 @@ const About = () => {
         <title>Tentang JurusanKu - Metode Certainty Factor</title>
         <meta name="description" content="Pelajari tentang metode Certainty Factor yang digunakan dalam JurusanKu untuk membantu pemilihan jurusan kuliah." />
       </Helmet>
-      <div className="min-h-screen flex flex-col bg-background overflow-x-hidden" ref={containerRef}>
+      <div className="min-h-screen flex flex-col bg-background overflow-x-hidden scroll-smooth" ref={containerRef}>
         <Navbar />
         <main className="flex-1 pt-24 pb-12">
           <div className="container mx-auto px-4">
             {/* Header with Animated Gradient & Parallax */}
-            <div className="relative text-center mb-12 max-w-3xl mx-auto overflow-hidden rounded-2xl p-8 md:p-12">
+            <div className="relative text-center mb-8 max-w-3xl mx-auto overflow-hidden rounded-2xl p-8 md:p-12">
               {/* Animated Gradient Background */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/5 to-accent/20 animate-gradient-shift" />
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/10 to-transparent animate-pulse-slow" />
@@ -106,9 +124,25 @@ const About = () => {
               <div className="absolute inset-0 rounded-2xl border border-primary/20 pointer-events-none" />
             </div>
 
+            {/* Section Navigation */}
+            <div className="flex flex-wrap justify-center gap-2 mb-12 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+              {navItems.map((item) => (
+                <Button
+                  key={item.label}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => scrollToSection(item.ref)}
+                  className="transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:border-primary hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-0.5"
+                >
+                  {item.label}
+                </Button>
+              ))}
+            </div>
+
             {/* What is CF - with Parallax */}
             <section 
-              className="max-w-4xl mx-auto mb-16"
+              ref={cfSectionRef}
+              className="max-w-4xl mx-auto mb-16 scroll-mt-28"
               style={{ transform: `translateY(${scrollY * 0.02}px)` }}
             >
               <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl animate-fade-in-up">
@@ -144,7 +178,8 @@ const About = () => {
 
             {/* How it works - with Parallax & Interactive Cards */}
             <section 
-              className="max-w-4xl mx-auto mb-16"
+              ref={caraKerjaSectionRef}
+              className="max-w-4xl mx-auto mb-16 scroll-mt-28"
               style={{ transform: `translateY(${scrollY * 0.015}px)` }}
             >
               <h2 className="text-2xl font-bold mb-6 text-center animate-fade-in">Cara Kerja Sistem</h2>
@@ -176,7 +211,8 @@ const About = () => {
 
             {/* CF Combination Formula - with Parallax */}
             <section 
-              className="max-w-4xl mx-auto mb-16"
+              ref={rumusSectionRef}
+              className="max-w-4xl mx-auto mb-16 scroll-mt-28"
               style={{ transform: `translateY(${scrollY * 0.01}px)` }}
             >
               <Card className="transition-all duration-300 hover:shadow-xl animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
@@ -212,7 +248,8 @@ const About = () => {
 
             {/* Advantages - with Parallax */}
             <section 
-              className="max-w-4xl mx-auto"
+              ref={keunggulanSectionRef}
+              className="max-w-4xl mx-auto scroll-mt-28"
               style={{ transform: `translateY(${scrollY * 0.005}px)` }}
             >
               <h2 className="text-2xl font-bold mb-6 text-center animate-fade-in">Keunggulan Metode CF</h2>
