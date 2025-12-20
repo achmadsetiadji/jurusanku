@@ -228,7 +228,7 @@ const Assessment = () => {
 
               {/* Category Intro Card */}
               <Card className="p-8 text-center border border-border animate-scale-in transition-all duration-300 hover:shadow-xl">
-                <div className="w-20 h-20 rounded-full bg-background/80 flex items-center justify-center mx-auto mb-6 animate-float">
+                <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6 animate-float">
                   <CategoryIcon className="w-10 h-10 text-primary" />
                 </div>
                 
@@ -246,11 +246,15 @@ const Assessment = () => {
 
                 <div className="flex items-center justify-center gap-6 mb-8 text-sm">
                   <div className="flex items-center gap-2 text-muted-foreground">
-                    <Target className="w-4 h-4 text-primary" />
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <Target className="w-4 h-4 text-primary" />
+                    </div>
                     <span>{totalInCategory} pertanyaan</span>
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground">
-                    <Clock className="w-4 h-4 text-primary" />
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <Clock className="w-4 h-4 text-primary" />
+                    </div>
                     <span>~{Math.ceil(totalInCategory * 0.5)} menit</span>
                   </div>
                 </div>
@@ -294,7 +298,7 @@ const Assessment = () => {
                       }`}
                     >
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2 ${
-                        isComplete ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                        isComplete ? 'bg-primary' : 'bg-primary/10'
                       }`}>
                         {isComplete ? (
                           <CheckCircle2 className="w-5 h-5 text-primary-foreground" />
@@ -330,16 +334,22 @@ const Assessment = () => {
             <div className="bg-card rounded-xl border border-border p-4 mb-6 animate-fade-in transition-all duration-300 hover:shadow-lg">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <CategoryIcon className="w-5 h-5 text-primary" />
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <CategoryIcon className="w-4 h-4 text-primary" />
+                  </div>
                   <span className="font-medium text-sm">{config.label}</span>
                 </div>
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <Clock className="w-4 h-4 text-primary" />
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center">
+                      <Clock className="w-3.5 h-3.5 text-primary" />
+                    </div>
                     <span>~{estimatedMinutes} mnt</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <CheckCircle2 className="w-4 h-4 text-primary" />
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-primary" />
+                    </div>
                     <span>{answeredCount}/{questions.length}</span>
                   </div>
                 </div>
@@ -364,9 +374,10 @@ const Assessment = () => {
               </div>
             </div>
 
-            {/* Motivational Message */}
-            <div className="flex items-center gap-2 mb-6 p-3 rounded-lg bg-primary/5 border border-primary/20 animate-fade-in">
-              <Sparkles className="w-4 h-4 text-primary flex-shrink-0" />
+            <div className="flex items-center gap-2 mb-6 p-3 rounded-xl bg-card border border-border animate-fade-in">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-4 h-4 text-primary" />
+              </div>
               <p className="text-sm text-foreground">{motivationalMessage}</p>
             </div>
 
