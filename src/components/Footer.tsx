@@ -10,6 +10,7 @@ const Footer = () => {
     { path: '/', label: 'Beranda' },
     { path: '/assessment', label: 'Mulai Asesmen' },
     { path: '/about', label: 'Tentang Kami' },
+    { path: '/faq', label: 'FAQ' },
   ];
 
   const features = [
