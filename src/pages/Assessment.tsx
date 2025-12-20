@@ -198,7 +198,7 @@ const Assessment = () => {
     return (
       <>
         <Navbar />
-        <PageLoader />
+        <PageLoader variant="assessment" />
       </>
     );
   }

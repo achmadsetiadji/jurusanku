@@ -210,7 +210,7 @@ const Results = () => {
     return (
       <>
         <Navbar />
-        <PageLoader />
+        <PageLoader variant="results" />
       </>
     );
   }
