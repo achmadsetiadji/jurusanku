@@ -7,7 +7,7 @@ import PageLoader from '@/components/PageLoader';
 import ResultCard from '@/components/ResultCard';
 import { Button } from '@/components/ui/button';
 import { CFResult } from '@/lib/certaintyFactor';
-import { ArrowLeft, RotateCcw, Trophy, Download, Loader2 } from 'lucide-react';
+import { ArrowLeft, RotateCcw, Trophy, Download, Loader2, Sparkles, Award, Star } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const Results = () => {
@@ -16,7 +16,9 @@ const Results = () => {
   const [results, setResults] = useState<CFResult[]>([]);
   const [isExporting, setIsExporting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [scrollY, setScrollY] = useState(0);
   const resultsRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const storedResults = sessionStorage.getItem('cfResults');
@@ -33,6 +35,15 @@ const Results = () => {
 
     return () => clearTimeout(timer);
   }, [navigate]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleRetake = () => {
     sessionStorage.removeItem('cfResults');
@@ -223,40 +234,104 @@ const Results = () => {
         <title>Hasil Rekomendasi - JurusanKu</title>
         <meta name="description" content="Lihat hasil rekomendasi jurusan kuliah berdasarkan analisis Certainty Factor dari jawaban Anda." />
       </Helmet>
-      <div className="min-h-screen flex flex-col bg-background">
+      <div className="min-h-screen flex flex-col bg-background overflow-x-hidden scroll-smooth" ref={containerRef}>
         <Navbar />
         <main className="flex-1 pt-24 pb-12">
           <div className="container mx-auto px-4" ref={resultsRef}>
-            {/* Header */}
-            <div className="text-center mb-12 max-w-2xl mx-auto">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 animate-float">
-                <Trophy className="w-8 h-8 text-primary" />
+            {/* Header with Animated Gradient & Parallax */}
+            <div className="relative text-center mb-12 max-w-2xl mx-auto overflow-hidden rounded-2xl p-8 md:p-12">
+              {/* Animated Gradient Background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/5 to-accent/20 animate-gradient-shift" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/10 to-transparent animate-pulse-slow" />
+              
+              {/* Floating Orbs with Parallax */}
+              <div 
+                className="absolute -top-10 -left-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl animate-float"
+                style={{ transform: `translateY(${scrollY * 0.1}px)` }}
+              />
+              <div 
+                className="absolute -bottom-10 -right-10 w-32 h-32 bg-accent/15 rounded-full blur-2xl animate-float-delayed"
+                style={{ transform: `translateY(${scrollY * -0.08}px)` }}
+              />
+              <div 
+                className="absolute top-1/2 left-1/4 w-20 h-20 bg-primary/5 rounded-full blur-xl animate-float-slow"
+                style={{ transform: `translateY(${scrollY * 0.05}px)` }}
+              />
+              
+              {/* Floating Stars */}
+              <div 
+                className="absolute top-8 right-12 hidden md:block"
+                style={{ transform: `translateY(${scrollY * 0.12}px)` }}
+              >
+                <Star className="w-6 h-6 text-primary/30 animate-float" style={{ animationDelay: '0.5s' }} />
               </div>
-              <h1 className="text-3xl md:text-4xl font-bold mb-4 animate-fade-in">
-                Hasil Rekomendasi Jurusan
-              </h1>
-              <p className="text-muted-foreground text-lg animate-fade-in" style={{ animationDelay: '0.1s' }}>
-                Berdasarkan analisis <strong>Certainty Factor</strong>, berikut adalah rekomendasi 
-                jurusan kuliah yang sesuai dengan minat, kemampuan, dan prestasi akademik Anda.
-              </p>
+              <div 
+                className="absolute bottom-12 left-8 hidden md:block"
+                style={{ transform: `translateY(${scrollY * -0.1}px)` }}
+              >
+                <Sparkles className="w-5 h-5 text-primary/40 animate-float" style={{ animationDelay: '1s' }} />
+              </div>
+              
+              {/* Content */}
+              <div className="relative z-10">
+                <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 animate-float transition-all duration-500 hover:bg-primary hover:shadow-lg hover:shadow-primary/25 group">
+                  <Trophy className="w-10 h-10 text-primary transition-all duration-500 group-hover:text-primary-foreground group-hover:scale-110" />
+                </div>
+                <h1 className="text-3xl md:text-4xl font-bold mb-4 animate-fade-in bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent bg-[length:200%_auto] animate-text-shimmer">
+                  Hasil Rekomendasi Jurusan
+                </h1>
+                <p className="text-muted-foreground text-lg animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                  Berdasarkan analisis <strong className="text-primary">Certainty Factor</strong>, berikut adalah rekomendasi 
+                  jurusan kuliah yang sesuai dengan minat, kemampuan, dan prestasi akademik Anda.
+                </p>
+              </div>
+              
+              {/* Border Glow */}
+              <div className="absolute inset-0 rounded-2xl border border-primary/20 pointer-events-none" />
             </div>
 
-            {/* Top Recommendation Highlight */}
-            <div className="max-w-2xl mx-auto mb-12 p-6 rounded-2xl bg-gradient-to-br from-primary/10 via-card to-accent/10 border border-primary/20 animate-scale-in transition-all duration-300 hover:shadow-xl">
-              <div className="text-center">
-                <p className="text-sm font-medium text-primary mb-2">Rekomendasi Terbaik</p>
-                <div className="text-5xl mb-4 animate-float">{topResult.major.icon}</div>
-                <h2 className="text-2xl md:text-3xl font-bold mb-2">{topResult.major.name}</h2>
-                <div className="flex items-center justify-center gap-4 text-muted-foreground">
-                  <span className="text-4xl font-bold text-primary animate-pulse-glow rounded-full px-4 py-2">{topResult.percentage}%</span>
-                  <span className="text-sm">tingkat kepastian</span>
+            {/* Top Recommendation Highlight with Enhanced Parallax */}
+            <div 
+              className="max-w-2xl mx-auto mb-12 relative"
+              style={{ transform: `translateY(${scrollY * 0.02}px)` }}
+            >
+              <div className="group relative p-8 rounded-2xl bg-gradient-to-br from-primary/10 via-card to-accent/10 border border-primary/20 animate-scale-in transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:border-primary/40 overflow-hidden">
+                {/* Animated Background */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/5 to-transparent animate-pulse-slow" />
+                
+                {/* Decorative Elements */}
+                <div className="absolute top-4 left-4">
+                  <Award className="w-8 h-8 text-primary/20 transition-all duration-500 group-hover:text-primary/40 group-hover:scale-110" />
+                </div>
+                <div className="absolute bottom-4 right-4">
+                  <Sparkles className="w-6 h-6 text-primary/20 transition-all duration-500 group-hover:text-primary/40 group-hover:rotate-12" />
+                </div>
+                
+                <div className="text-center relative z-10">
+                  <p className="text-sm font-medium text-primary mb-3 flex items-center justify-center gap-2">
+                    <span className="w-8 h-px bg-primary/30" />
+                    Rekomendasi Terbaik
+                    <span className="w-8 h-px bg-primary/30" />
+                  </p>
+                  <div className="text-6xl mb-4 animate-float transition-transform duration-500 group-hover:scale-110">{topResult.major.icon}</div>
+                  <h2 className="text-2xl md:text-3xl font-bold mb-3 transition-colors duration-300 group-hover:text-primary">{topResult.major.name}</h2>
+                  <div className="flex items-center justify-center gap-4 text-muted-foreground">
+                    <span className="text-5xl font-bold text-primary animate-pulse-glow rounded-full px-6 py-3 bg-primary/5 transition-all duration-500 group-hover:bg-primary/10 group-hover:shadow-lg group-hover:shadow-primary/20">{topResult.percentage}%</span>
+                    <span className="text-sm">tingkat kepastian</span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* All Results */}
-            <div className="max-w-4xl mx-auto">
-              <h3 className="text-xl font-semibold mb-6 animate-fade-in">Semua Rekomendasi</h3>
+            {/* All Results with Parallax */}
+            <div 
+              className="max-w-4xl mx-auto"
+              style={{ transform: `translateY(${scrollY * 0.01}px)` }}
+            >
+              <h3 className="text-xl font-semibold mb-6 animate-fade-in flex items-center gap-2">
+                <span className="w-1 h-6 bg-primary rounded-full" />
+                Semua Rekomendasi
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {results.map((result, index) => (
                   <ResultCard key={result.majorId} result={result} rank={index + 1} />
@@ -264,12 +339,15 @@ const Results = () => {
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+            {/* Action Buttons with Parallax */}
+            <div 
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12 animate-fade-in-up" 
+              style={{ animationDelay: '0.5s', transform: `translateY(${scrollY * 0.005}px)` }}
+            >
               <Button 
                 variant="outline" 
                 onClick={() => navigate('/')} 
-                className="gap-2 transition-all duration-300 hover:scale-105 active:scale-95"
+                className="gap-2 transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:border-primary/30"
               >
                 <ArrowLeft className="w-4 h-4 text-foreground" />
                 Kembali ke Beranda
@@ -278,7 +356,7 @@ const Results = () => {
                 variant="outline"
                 onClick={handleExportPDF}
                 disabled={isExporting}
-                className="gap-2 transition-all duration-300 hover:scale-105 active:scale-95"
+                className="gap-2 transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg hover:border-primary/30"
               >
                 {isExporting ? (
                   <Loader2 className="w-4 h-4 animate-spin text-foreground" />
@@ -289,7 +367,7 @@ const Results = () => {
               </Button>
               <Button 
                 onClick={handleRetake} 
-                className="gap-2 transition-all duration-300 hover:scale-105 active:scale-95"
+                className="gap-2 transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-xl hover:shadow-primary/25"
               >
                 <RotateCcw className="w-4 h-4 text-primary-foreground" />
                 Ulangi Asesmen
