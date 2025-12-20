@@ -29,9 +29,7 @@ const QuestionCard = ({
   categoryConfig,
 }: QuestionCardProps) => {
   return (
-    <div className={`bg-card rounded-2xl border-2 p-6 md:p-8 shadow-lg animate-scale-in transition-all ${
-      categoryConfig?.borderColor || 'border-border'
-    }`}>
+    <div className="bg-card rounded-2xl border border-border p-6 md:p-8 shadow-lg animate-scale-in transition-all duration-300 hover:shadow-xl">
       {/* Question number badge */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">

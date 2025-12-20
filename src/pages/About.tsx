@@ -1,10 +1,31 @@
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import PageLoader from '@/components/PageLoader';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Brain, Calculator, CheckCircle2, Target, Workflow, Zap } from 'lucide-react';
 
 const About = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <>
+        <Navbar />
+        <PageLoader />
+      </>
+    );
+  }
+
   return (
     <>
       <Helmet>

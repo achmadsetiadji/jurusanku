@@ -1,8 +1,9 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import PageLoader from '@/components/PageLoader';
 import QuestionCard from '@/components/QuestionCard';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -61,6 +62,15 @@ const Assessment = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<{ [key: string]: number }>({});
   const [showCategoryIntro, setShowCategoryIntro] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Group questions by category
   const questionsByCategory = useMemo(() => {
@@ -184,6 +194,15 @@ const Assessment = () => {
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
   const canProceed = showCategoryIntro ? true : selectedValue !== null;
 
+  if (isLoading) {
+    return (
+      <>
+        <Navbar />
+        <PageLoader />
+      </>
+    );
+  }
+
   // Category intro screen
   if (showCategoryIntro && isNewCategory) {
     const categoryIndex = ['interest', 'skill', 'academic'].indexOf(currentCategory) + 1;
@@ -208,7 +227,7 @@ const Assessment = () => {
               </div>
 
               {/* Category Intro Card */}
-              <Card className={`p-8 text-center bg-gradient-to-br ${config.color} ${config.borderColor} border-2 animate-scale-in`}>
+              <Card className="p-8 text-center border border-border animate-scale-in transition-all duration-300 hover:shadow-xl">
                 <div className="w-20 h-20 rounded-full bg-background/80 flex items-center justify-center mx-auto mb-6 animate-float">
                   <CategoryIcon className="w-10 h-10 text-primary" />
                 </div>
@@ -266,9 +285,9 @@ const Assessment = () => {
                   return (
                     <div 
                       key={cat}
-                      className={`p-4 rounded-xl border text-center transition-all ${
+                      className={`p-4 rounded-xl border text-center transition-all duration-300 hover:shadow-lg ${
                         isCurrent 
-                          ? `bg-gradient-to-br ${catConfig.color} ${catConfig.borderColor} border-2`
+                          ? 'bg-primary/5 border-primary/30'
                           : isComplete
                             ? 'bg-primary/5 border-primary/30'
                             : 'bg-card border-border'
@@ -308,7 +327,7 @@ const Assessment = () => {
         <main className="flex-1 pt-24 pb-12">
           <div className="container mx-auto px-4 max-w-2xl">
             {/* Top Stats Bar */}
-            <div className="bg-card rounded-xl border border-border p-4 mb-6 animate-fade-in">
+            <div className="bg-card rounded-xl border border-border p-4 mb-6 animate-fade-in transition-all duration-300 hover:shadow-lg">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <CategoryIcon className="w-5 h-5 text-primary" />
