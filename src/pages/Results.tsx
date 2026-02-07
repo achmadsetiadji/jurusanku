@@ -206,7 +206,9 @@ const Results = () => {
         description: 'Hasil asesmen telah disimpan dalam format PDF.',
       });
     } catch (error) {
-      console.error('Error exporting PDF:', error);
+      if (import.meta.env.DEV) {
+        console.error('Error exporting PDF:', error);
+      }
       toast({
         title: 'Gagal Mengunduh PDF',
         description: 'Terjadi kesalahan saat membuat PDF. Silakan coba lagi.',
